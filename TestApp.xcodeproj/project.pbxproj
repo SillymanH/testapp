@@ -15,6 +15,9 @@
 		18EB289B23AF730A00A8A037 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18EB289923AF730A00A8A037 /* LaunchScreen.storyboard */; };
 		18EB28A623AF730A00A8A037 /* TestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28A523AF730A00A8A037 /* TestAppTests.swift */; };
 		18EB28B123AF730A00A8A037 /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28B023AF730A00A8A037 /* TestAppUITests.swift */; };
+		18EB28C123AF742A00A8A037 /* PrototypeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */; };
+		18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */; };
+		18EB28C723B0147100A8A037 /* SubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C623B0147100A8A037 /* SubscribeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		18EB28AC23AF730A00A8A037 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		18EB28B023AF730A00A8A037 /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		18EB28B223AF730A00A8A037 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeViewCell.swift; sourceTree = "<group>"; };
+		18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedVideosCell.swift; sourceTree = "<group>"; };
+		18EB28C623B0147100A8A037 /* SubscribeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +108,13 @@
 				18EB288E23AF730900A8A037 /* AppDelegate.swift */,
 				18EB289023AF730900A8A037 /* SceneDelegate.swift */,
 				18EB289223AF730900A8A037 /* ViewController.swift */,
+				18EB28C623B0147100A8A037 /* SubscribeViewController.swift */,
 				18EB289423AF730900A8A037 /* Main.storyboard */,
 				18EB289723AF730A00A8A037 /* Assets.xcassets */,
 				18EB289923AF730A00A8A037 /* LaunchScreen.storyboard */,
 				18EB289C23AF730A00A8A037 /* Info.plist */,
+				18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */,
+				18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -259,9 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */,
 				18EB289323AF730900A8A037 /* ViewController.swift in Sources */,
 				18EB288F23AF730900A8A037 /* AppDelegate.swift in Sources */,
+				18EB28C723B0147100A8A037 /* SubscribeViewController.swift in Sources */,
 				18EB289123AF730900A8A037 /* SceneDelegate.swift in Sources */,
+				18EB28C123AF742A00A8A037 /* PrototypeViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
