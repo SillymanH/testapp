@@ -11,7 +11,6 @@ import WebKit
 
 class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegate, UITableViewDataSource{
 
-    @IBOutlet weak var prototypeTable: UITableView!
     @IBOutlet weak var youTubeWebView: WKWebView!
     @IBOutlet weak var suggestedVideosTable: UITableView!
     // MARK: - Constants
@@ -35,11 +34,22 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         getSuggestedVideos()
     }
     
+//     Programatically navigate to a new screen
 //    @IBAction func Gotosubscribe(_ sender: Any) {
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let newViewController = storyBoard.instantiateViewController(withIdentifier: "subscribe_view_controller") as! SubscribeViewController
 //                self.present(newViewController, animated: true, completion: nil)
 //    }
+    
+    
+    @IBAction func checkboxTapped(_ sender: UIButton) {
+        if sender.isSelected {
+                   sender.isSelected = false
+               }else {
+                   sender.isSelected = true
+               }
+    }
+    
     
     // MARK: - UIWebViewDelegate
        
@@ -132,27 +142,27 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     
     func getSuggestedVideos(){
-        
         suggestedVideosTable.dataSource = self
         suggestedVideosTable.delegate = self
         suggestedVideosTable.reloadData()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-          return 1
-      }
+        return 1
+        
+    }
 
-      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-          return videos.count
-      }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return videos.count
+        
+    }
 
-      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            //let videoTitle = videos[indexPath.row]
-              let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel.text = videos[indexPath.row]
-              return cell
-      }
+            return cell
+        
+    }
 
 }
 
