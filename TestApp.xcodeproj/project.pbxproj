@@ -18,6 +18,7 @@
 		18EB28C123AF742A00A8A037 /* PrototypeViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */; };
 		18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */; };
 		18EB28C723B0147100A8A037 /* SubscribeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C623B0147100A8A037 /* SubscribeViewController.swift */; };
+		18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C923B162F300A8A037 /* RegisterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeViewCell.swift; sourceTree = "<group>"; };
 		18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedVideosCell.swift; sourceTree = "<group>"; };
 		18EB28C623B0147100A8A037 /* SubscribeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeViewController.swift; sourceTree = "<group>"; };
+		18EB28C923B162F300A8A037 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				18EB289C23AF730A00A8A037 /* Info.plist */,
 				18EB28C023AF742A00A8A037 /* PrototypeViewCell.swift */,
 				18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */,
+				18EB28C923B162F300A8A037 /* RegisterViewController.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			files = (
 				18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */,
 				18EB289323AF730900A8A037 /* ViewController.swift in Sources */,
+				18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */,
 				18EB288F23AF730900A8A037 /* AppDelegate.swift in Sources */,
 				18EB28C723B0147100A8A037 /* SubscribeViewController.swift in Sources */,
 				18EB289123AF730900A8A037 /* SceneDelegate.swift in Sources */,

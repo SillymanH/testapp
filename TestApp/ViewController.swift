@@ -41,16 +41,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 //                self.present(newViewController, animated: true, completion: nil)
 //    }
     
-    
-    @IBAction func checkboxTapped(_ sender: UIButton) {
-        if sender.isSelected {
-                   sender.isSelected = false
-               }else {
-                   sender.isSelected = true
-               }
-    }
-    
-    
     // MARK: - UIWebViewDelegate
        
     func webView(_ webView: WKWebView, shouldStartLoadWith request: URLRequest, navigationType: WKNavigationType) -> Bool {
