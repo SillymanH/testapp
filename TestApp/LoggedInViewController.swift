@@ -54,7 +54,7 @@ class LoggedInViewController: UIViewController {
     
     func DoLogin(_ user:String, _ psw:String)
        {
-           let url = URL(string: "http://www.kaleidosblog.com/tutorial/login/api/login")
+           let url = URL(string: "http://localhost:8888/test_db/index.php")
            let session = URLSession.shared
            
            let request = NSMutableURLRequest(url: url!)
@@ -89,20 +89,26 @@ class LoggedInViewController: UIViewController {
                {
                    return
                }
+                print(server_response)
                
                
-               if let data_block = server_response["data"] as? NSDictionary
-               {
-                   if let session_data = data_block["session"] as? String
-                   {
-                       let preferences = UserDefaults.standard
-                       preferences.set(session_data, forKey: "session")
-                       
-                       DispatchQueue.main.async (
-                           execute:self.LoginDone
-                       )
+//               if let data_block = server_response["data"] as? NSDictionary
+//               {
+                if let session_data = server_response["success"] as? Int
+                {
+                    if session_data == 0
+                    {
+                        print(server_response)
+//                        self.showAlert("Invalid Login", msg: "Wrong username or password")
+                        return
+                    }
+                    let preferences = UserDefaults.standard
+                                           preferences.set(session_data, forKey: "session")
+                                           DispatchQueue.main.async (
+                                           execute:self.LoginDone
+                                           )
                    }
-               }
+//               }
            
            })
            
@@ -125,6 +131,14 @@ class LoggedInViewController: UIViewController {
           
           _login_button.setTitle("Logout", for: .normal)
         
+    }
+    
+    func showAlert(_ alertTitle: String, msg: String) {
+        let alertController = UIAlertController(title: alertTitle, message:
+            msg, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+
+        self.present(alertController, animated: true, completion: nil)
     }
 
 }
