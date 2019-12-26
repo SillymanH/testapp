@@ -9,12 +9,90 @@
 import UIKit
 
 class RegisterViewController: UIViewController {
-
+    
+    @IBOutlet weak var _fullname: UITextField!
+    @IBOutlet weak var _username: UITextField!
+    @IBOutlet weak var _password: UITextField!
+    //TODO: Implement confirm password field
+    @IBOutlet weak var _email: UITextField!
+    @IBOutlet weak var _mobileNumber: UITextField!
+    let getAlert = LoggedInViewController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
+    
+    @IBAction func RegisterPressed(_ sender: UIButton) {
+        
+        let fullname = _fullname.text
+        let username = _username.text
+        let password = _password.text
+        let email = _email.text
+        let mobileNumber = _mobileNumber.text
+        
+        if(fullname == "" || username == "" || password == "" || email == "" || mobileNumber == "")
+        {
+            //TODO: show alert here
+            self.showAlert("Error", msg: "Please fill all fields")
+            return
+            
+        }
+        DoRegister(fullname!, username!, password! ,email!, mobileNumber!)
+        
+    }
+    
+    func DoRegister(_ full_name:String,_ user_name:String,_ pass:String ,_ email:String,_ mobile_number:String){
+        let url = URL(string: "http://localhost:8888/test_db/index.php")
+        
+           let session = URLSession.shared
+        
+           let request = NSMutableURLRequest(url: url!)
+           request.httpMethod = "POST"
+        
+        let paramToSend = "fullname=" + full_name + "&username=" + user_name + "&password=" + pass + "&email=" + email + "&mobileNumber=" + mobile_number
+         request.httpBody = paramToSend.data(using: String.Encoding.utf8)
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {
+        (data, response, error) in
+
+            guard let _:Data = data else
+            {
+                return
+            }
+
+            let json:Any?
+
+            do
+            {
+                json = try JSONSerialization.jsonObject(with: data!, options: [])
+            }
+            catch
+            {
+                return
+            }
+
+
+            guard let server_response = json as? NSDictionary else
+            {
+                return
+            }
+             print(server_response)
+            
+            if let session_data = server_response["success"] as? Int{
+                if session_data == 0
+                {
+                    print(server_response)
+                    //TODO: Handle having an invalid email address
+                    self.showAlert("Error in registering", msg: "Username/Email already exists")
+                    return
+                }
+            }
+        })
+            task.resume()
+    }
+    
 
     @IBAction func checkBoxTapped(_ sender: UIButton) {
         if sender.isSelected {
@@ -23,4 +101,12 @@ class RegisterViewController: UIViewController {
             sender.isSelected = true
         }
     }
+    
+    func showAlert(_ alertTitle: String, msg: String) {
+            DispatchQueue.main.async {
+               let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
+               alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+               self.present(alertController, animated: true, completion: nil)
+           }
+       }
 }

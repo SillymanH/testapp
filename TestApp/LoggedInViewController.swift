@@ -32,49 +32,46 @@ class LoggedInViewController: UIViewController {
     
     @IBAction func LoginPressed(_ sender: Any) {
         if(_login_button.titleLabel?.text == "Logout")
-               {
-                   let preferences = UserDefaults.standard
-                   preferences.removeObject(forKey: "session")
-                   
-                   LoginToDo()
-                   return
-               }
-               
-               
-               let username = _username.text
-               let password = _password.text
-               
-               if(username == "" || password == "")
-               {
-                   return
-               }
-               
-               DoLogin(username!, password!)
+        {
+            let preferences = UserDefaults.standard
+            preferences.removeObject(forKey: "session")
+                
+            LoginToDo()
+            return
+            
+        }
+        
+        let username = _username.text
+        let password = _password.text
+            
+        if(username == "" || password == "")
+        {
+            return
+        }
+        DoLogin(username!, password!)
     }
     
-    func DoLogin(_ user:String, _ psw:String)
-       {
+    func DoLogin(_ user:String, _ psw:String){
            let url = URL(string: "http://localhost:8888/test_db/index.php")
+        
            let session = URLSession.shared
-           
+        
            let request = NSMutableURLRequest(url: url!)
            request.httpMethod = "POST"
-           
-           let paramToSend = "username=" + user + "&password=" + psw
-           
-           request.httpBody = paramToSend.data(using: String.Encoding.utf8)
-           
+
+            let paramToSend = "username=" + user + "&password=" + psw
+            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
            
            let task = session.dataTask(with: request as URLRequest, completionHandler: {
            (data, response, error) in
-               
+
                guard let _:Data = data else
                {
                    return
                }
-               
+
                let json:Any?
-               
+
                do
                {
                    json = try JSONSerialization.jsonObject(with: data!, options: [])
@@ -83,8 +80,8 @@ class LoggedInViewController: UIViewController {
                {
                    return
                }
-               
-               
+
+
                guard let server_response = json as? NSDictionary else
                {
                    return
@@ -99,7 +96,7 @@ class LoggedInViewController: UIViewController {
                     if session_data == 0
                     {
                         print(server_response)
-//                        self.showAlert("Invalid Login", msg: "Wrong username or password")
+                        self.showAlert("Invalid Login", msg: "Wrong username or password")
                         return
                     }
                     let preferences = UserDefaults.standard
@@ -111,7 +108,7 @@ class LoggedInViewController: UIViewController {
 //               }
            
            })
-           
+
            task.resume()
        }
     
@@ -134,11 +131,11 @@ class LoggedInViewController: UIViewController {
     }
     
     func showAlert(_ alertTitle: String, msg: String) {
-        let alertController = UIAlertController(title: alertTitle, message:
-            msg, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-
-        self.present(alertController, animated: true, completion: nil)
+         DispatchQueue.main.async {
+            let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
 
 }
