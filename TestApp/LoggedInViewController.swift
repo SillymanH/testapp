@@ -52,65 +52,60 @@ class LoggedInViewController: UIViewController {
     }
     
     func DoLogin(_ user:String, _ psw:String){
-           let url = URL(string: "http://localhost:8888/test_db/index.php")
+        let url = URL(string: "http://localhost:8888/test_db/index.php/")
         
-           let session = URLSession.shared
+        let session = URLSession.shared
         
-           let request = NSMutableURLRequest(url: url!)
-           request.httpMethod = "POST"
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
 
-            let paramToSend = "username=" + user + "&password=" + psw
-            request.httpBody = paramToSend.data(using: String.Encoding.utf8)
+        let paramToSend = "username=" + user + "&password=" + psw
+        request.httpBody = paramToSend.data(using: String.Encoding.utf8)
            
-           let task = session.dataTask(with: request as URLRequest, completionHandler: {
-           (data, response, error) in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {
+            (data, response, error) in
+            
+            guard let _:Data = data else
+            {
+                return
+            }
 
-               guard let _:Data = data else
-               {
-                   return
-               }
-
-               let json:Any?
-
-               do
-               {
-                   json = try JSONSerialization.jsonObject(with: data!, options: [])
-               }
-               catch
-               {
-                   return
-               }
+            let json:Any?
+            
+            do
+            {
+                json = try JSONSerialization.jsonObject(with: data!, options: [])
+            }
+            catch
+            {
+                return
+            }
 
 
-               guard let server_response = json as? NSDictionary else
-               {
-                   return
-               }
-                print(server_response)
+            guard let server_response = json as? NSDictionary else
+            {
+                return
+            }
+            print(server_response)
                
                
-//               if let data_block = server_response["data"] as? NSDictionary
-//               {
-                if let session_data = server_response["success"] as? Int
-                {
-                    if session_data == 0
-                    {
-                        print(server_response)
-                        self.showAlert("Invalid Login", msg: "Wrong username or password")
-                        return
-                    }
-                    let preferences = UserDefaults.standard
-                                           preferences.set(session_data, forKey: "session")
-                                           DispatchQueue.main.async (
-                                           execute:self.LoginDone
-                                           )
-                   }
-//               }
-           
-           })
+            if let session_data = server_response["success"] as? Int {
+                
+                if session_data == 0 {
+//                    print(server_response)
+                    self.showAlert("Invalid Login", msg: "Wrong username or password")
+                    return
+                }
+                let preferences = UserDefaults.standard
+                preferences.set(session_data, forKey: "session")
+                DispatchQueue.main.async (execute:self.LoginDone)
+                
+            }
+            
+        })
 
-           task.resume()
-       }
+        task.resume()
+    }
     
     func LoginToDo()
     {

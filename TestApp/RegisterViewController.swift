@@ -16,7 +16,7 @@ class RegisterViewController: UIViewController {
     //TODO: Implement confirm password field
     @IBOutlet weak var _email: UITextField!
     @IBOutlet weak var _mobileNumber: UITextField!
-    let getAlert = LoggedInViewController()
+    @IBOutlet weak var _checkbox: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,31 +32,40 @@ class RegisterViewController: UIViewController {
         let email = _email.text
         let mobileNumber = _mobileNumber.text
         
-        if(fullname == "" || username == "" || password == "" || email == "" || mobileNumber == "")
-        {
-            //TODO: show alert here
+        if (fullname == "" || username == "" || password == "" || email == "" || mobileNumber == "") {
+            
             self.showAlert("Error", msg: "Please fill all fields")
             return
             
         }
+        
+        if (!_checkbox.isSelected){
+            
+            self.showAlert("Error", msg: "Please agree to the terms and conditions")
+            return
+        }
+        
         DoRegister(fullname!, username!, password! ,email!, mobileNumber!)
         
     }
     
     func DoRegister(_ full_name:String,_ user_name:String,_ pass:String ,_ email:String,_ mobile_number:String){
-        let url = URL(string: "http://localhost:8888/test_db/index.php")
         
-           let session = URLSession.shared
+        let url = URL(string: "http://localhost:8888/test_db/index.php/")
         
-           let request = NSMutableURLRequest(url: url!)
-           request.httpMethod = "POST"
+        let session = URLSession.shared
         
-        let paramToSend = "fullname=" + full_name + "&username=" + user_name + "&password=" + pass + "&email=" + email + "&mobileNumber=" + mobile_number
+        let request = NSMutableURLRequest(url: url!)
+        request.httpMethod = "POST"
+        
+        let paramToSend = "username=" + user_name + "&password=" + pass + "&email=" + email + "&fullname=" + full_name + "&mobileNumber=" + mobile_number
          request.httpBody = paramToSend.data(using: String.Encoding.utf8)
         
         let task = session.dataTask(with: request as URLRequest, completionHandler: {
-        (data, response, error) in
-
+            (data, response, error) in
+            
+            print("In the task")
+            
             guard let _:Data = data else
             {
                 return
@@ -80,21 +89,30 @@ class RegisterViewController: UIViewController {
             }
              print(server_response)
             
-            if let session_data = server_response["success"] as? Int{
-                if session_data == 0
-                {
-                    print(server_response)
+            if let session_data = server_response["success"] as? Int {
+               
+                if session_data == 0 {
+//                    print(server_response)
                     //TODO: Handle having an invalid email address
                     self.showAlert("Error in registering", msg: "Username/Email already exists")
                     return
                 }
+                
+                //Navigating user to the login page
+                let doAction = UIAlertAction(title: "OK", style: .default) { (action) -> Void in
+                let loggedInVC = self.storyboard?.instantiateViewController(withIdentifier: "LoggedInViewController")
+                self.present(loggedInVC!, animated: true, completion: nil)}
+                
+                self.showActionAlert("Success", "You have been registered successfully.", doAction)
+                
             }
         })
-            task.resume()
+        task.resume()
     }
     
 
     @IBAction func checkBoxTapped(_ sender: UIButton) {
+        
         if sender.isSelected {
             sender.isSelected = false
         }else {
@@ -103,10 +121,21 @@ class RegisterViewController: UIViewController {
     }
     
     func showAlert(_ alertTitle: String, msg: String) {
+        
             DispatchQueue.main.async {
                let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
-               alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+               alertController.addAction(UIAlertAction(title: "OK", style: .default))
                self.present(alertController, animated: true, completion: nil)
-           }
-       }
+        }
+    }
+    
+    func showActionAlert(_ alertTitle: String,_ msg: String,_ action: UIAlertAction) {
+
+               DispatchQueue.main.async {
+                let Alert = UIAlertController(title: alertTitle, message: msg, preferredStyle: .alert)
+                Alert.addAction(action)
+                self.present(Alert, animated: true, completion: nil)
+
+              }
+          }
 }

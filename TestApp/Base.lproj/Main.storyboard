@@ -403,6 +403,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="OQa-Sc-Qbj"/>
                     <connections>
+                        <outlet property="_checkbox" destination="iuD-pX-F4M" id="Gpt-Gf-tQD"/>
                         <outlet property="_email" destination="Bxy-hI-atj" id="Njx-IL-eKh"/>
                         <outlet property="_fullname" destination="zsQ-lv-Eo4" id="gKE-vo-Dpl"/>
                         <outlet property="_mobileNumber" destination="HfF-ht-aZo" id="BGJ-DR-etf"/>
