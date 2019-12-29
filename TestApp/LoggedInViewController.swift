@@ -13,6 +13,7 @@ class LoggedInViewController: UIViewController {
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
+    let alertFunctions: AlertFunctions = AlertFunctions()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,9 +64,8 @@ class LoggedInViewController: UIViewController {
             if let session_data = Response["success"] as? Int {
                 
                 if session_data == 0 {
-                    self.showAlert("Invalid Login", msg: "Wrong username or password")
-                        return
-                    
+                    self.alertFunctions.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
+                        return  
                 }
                 let preferences = UserDefaults.standard
                 preferences.set(session_data, forKey: "session")
@@ -92,12 +92,12 @@ class LoggedInViewController: UIViewController {
         
     }
     
-    func showAlert(_ alertTitle: String, msg: String) {
-         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            self.present(alertController, animated: true, completion: nil)
-        }
-    }
+//    func showAlert(_ alertTitle: String, msg: String) {
+//         DispatchQueue.main.async {
+//            let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
+//            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
+//            self.present(alertController, animated: true, completion: nil)
+//        }
+//    }
 
 }

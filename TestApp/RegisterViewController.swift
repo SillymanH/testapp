@@ -17,6 +17,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var _email: UITextField!
     @IBOutlet weak var _mobileNumber: UITextField!
     @IBOutlet weak var _checkbox: UIButton!
+    let alerFunctions: AlertFunctions = AlertFunctions()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,14 +35,14 @@ class RegisterViewController: UIViewController {
         
         if (fullname == "" || username == "" || password == "" || email == "" || mobileNumber == "") {
             
-            self.showAlert("Error", msg: "Please fill all fields")
+            self.alerFunctions.showAlert(self, "Error", msg: "Please fill all fields")
             return
             
         }
         
         if (!_checkbox.isSelected){
             
-            self.showAlert("Error", msg: "Please agree to the terms and conditions")
+            self.alerFunctions.showAlert(self, "Error", msg: "Please agree to the terms and conditions")
             return
         }
         
@@ -66,7 +67,7 @@ class RegisterViewController: UIViewController {
                
                 if session_data == 0 {
                     //TODO: Handle having an invalid email address
-                    self.showAlert("Error in registering", msg: "Username/Email already exists")
+                    self.alerFunctions.showAlert(self, "Error in registering", msg: "Username/Email already exists")
                     return
                 }
                 
@@ -74,8 +75,7 @@ class RegisterViewController: UIViewController {
                 let doAction = UIAlertAction(title: "OK", style: .default) { (action) -> Void in
                 let loggedInVC = self.storyboard?.instantiateViewController(withIdentifier: "LoggedInViewController")
                 self.present(loggedInVC!, animated: true, completion: nil)}
-                
-                self.showActionAlert("Success", "You have been registered successfully.", doAction)
+                self.alerFunctions.showActionAlert(self, "Success", "You have been registered successfully.", doAction)
             }
         }
     }
@@ -89,23 +89,23 @@ class RegisterViewController: UIViewController {
             sender.isSelected = true
         }
     }
+//
+//    func showAlert(_ alertTitle: String, msg: String) {
+//
+//            DispatchQueue.main.async {
+//               let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
+//               alertController.addAction(UIAlertAction(title: "OK", style: .default))
+//               self.present(alertController, animated: true, completion: nil)
+//        }
+//    }
     
-    func showAlert(_ alertTitle: String, msg: String) {
-        
-            DispatchQueue.main.async {
-               let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
-               alertController.addAction(UIAlertAction(title: "OK", style: .default))
-               self.present(alertController, animated: true, completion: nil)
-        }
-    }
-    
-    func showActionAlert(_ alertTitle: String,_ msg: String,_ action: UIAlertAction) {
-
-               DispatchQueue.main.async {
-                let Alert = UIAlertController(title: alertTitle, message: msg, preferredStyle: .alert)
-                Alert.addAction(action)
-                self.present(Alert, animated: true, completion: nil)
-
-              }
-          }
+//    func showActionAlert(_ alertTitle: String,_ msg: String,_ action: UIAlertAction) {
+//
+//               DispatchQueue.main.async {
+//                let Alert = UIAlertController(title: alertTitle, message: msg, preferredStyle: .alert)
+//                Alert.addAction(action)
+//                self.present(Alert, animated: true, completion: nil)
+//
+//              }
+//          }
 }
