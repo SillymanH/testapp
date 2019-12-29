@@ -53,46 +53,18 @@ class RegisterViewController: UIViewController {
         
         let url = URL(string: "http://localhost:8888/test_db/index.php/")
         
-        let session = URLSession.shared
+        let paramToSend = "username=" + user_name +
+                          "&password=" + pass +
+                          "&email=" + email +
+                          "&fullname=" + full_name +
+                          "&mobileNumber=" + mobile_number
         
-        let request = NSMutableURLRequest(url: url!)
-        request.httpMethod = "POST"
-        
-        let paramToSend = "username=" + user_name + "&password=" + pass + "&email=" + email + "&fullname=" + full_name + "&mobileNumber=" + mobile_number
-         request.httpBody = paramToSend.data(using: String.Encoding.utf8)
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {
-            (data, response, error) in
+        let sendRequest:HTTPFunctions = HTTPFunctions()
+        sendRequest.POST(url!, paramToSend) { response in
             
-            print("In the task")
-            
-            guard let _:Data = data else
-            {
-                return
-            }
-
-            let json:Any?
-
-            do
-            {
-                json = try JSONSerialization.jsonObject(with: data!, options: [])
-            }
-            catch
-            {
-                return
-            }
-
-
-            guard let server_response = json as? NSDictionary else
-            {
-                return
-            }
-             print(server_response)
-            
-            if let session_data = server_response["success"] as? Int {
+            if let session_data = response["success"] as? Int {
                
                 if session_data == 0 {
-//                    print(server_response)
                     //TODO: Handle having an invalid email address
                     self.showAlert("Error in registering", msg: "Username/Email already exists")
                     return
@@ -104,10 +76,8 @@ class RegisterViewController: UIViewController {
                 self.present(loggedInVC!, animated: true, completion: nil)}
                 
                 self.showActionAlert("Success", "You have been registered successfully.", doAction)
-                
             }
-        })
-        task.resume()
+        }
     }
     
 
