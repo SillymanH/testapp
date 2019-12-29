@@ -91,13 +91,5 @@ class LoggedInViewController: UIViewController {
           _login_button.setTitle("Logout", for: .normal)
         
     }
-    
-//    func showAlert(_ alertTitle: String, msg: String) {
-//         DispatchQueue.main.async {
-//            let alertController = UIAlertController(title: alertTitle, message:msg, preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: "Dismiss", style: .default))
-//            self.present(alertController, animated: true, completion: nil)
-//        }
-//    }
 
 }

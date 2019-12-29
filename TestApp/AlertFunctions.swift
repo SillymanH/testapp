@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class AlertFunctions: UIViewController {
+class AlertFunctions {
     
     func showAlert(_ classInstance: AnyObject,_ alertTitle: String, msg: String) {
         
