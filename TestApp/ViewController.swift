@@ -126,26 +126,87 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
            
            youTubeWebView.loadHTMLString(html, baseURL: nil)
        }
-       
-//    @objc func onEnterFullScreen() {
-//           print("Enter fullscreen")
-//    }
-//
-//    @objc func onCloseFullScreen() {
-//           print("Exit fullscreen")
-//    }
+    
+    func isSessionStored() -> Bool {
+        
+        if (preferences.object(forKey: "session") == nil){
+            return false
+        }
+        return true
+    }
     
     @IBAction func LikeIconPressed(_ sender: UIButton) {
            
-           if (preferences.object(forKey: "session") == nil){
-               let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-               let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-               self.present(newViewController, animated: true, completion: nil)
-           }
-           //TODO: Implement the Like Request
-           print("Supposed to do the Like API request")
-       }
-
+        if isSessionStored() {
+            
+            //TODO: Implement the Like API
+            print("Supposed to do the Like API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func DislikeIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            //TODO: Implement the Dislike API
+            print("Supposed to do the Dislike API request")
+            
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
+    @IBAction func ShareIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            
+            //TODO: Implement the share API
+            print("Supposed to do the Share API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func DownloadIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            
+            //TODO: Implement the Download API
+            print("Supposed to do the Download API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func SaveIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+                   
+            //TODO: Implement the Save API
+            print("Supposed to do the Save API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
     
     func getSuggestedVideos(){
         
@@ -168,6 +229,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         cell.suggestedVideosLabel.text = videos[indexPath.row]
             return cell
     }
+    
+   
 
 }
 
