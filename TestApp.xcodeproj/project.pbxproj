@@ -21,6 +21,7 @@
 		18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28C923B162F300A8A037 /* RegisterViewController.swift */; };
 		18EB28CC23B169E300A8A037 /* LoggedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28CB23B169E300A8A037 /* LoggedInViewController.swift */; };
 		18EB28D823B6552B00A8A037 /* HTTPFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28D723B6552B00A8A037 /* HTTPFunctions.swift */; };
+		18EB28DA23B8CDAA00A8A037 /* AlertFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB28D923B8CDAA00A8A037 /* AlertFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		18EB28C923B162F300A8A037 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		18EB28CB23B169E300A8A037 /* LoggedInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInViewController.swift; sourceTree = "<group>"; };
 		18EB28D723B6552B00A8A037 /* HTTPFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPFunctions.swift; sourceTree = "<group>"; };
+		18EB28D923B8CDAA00A8A037 /* AlertFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 				18EB28C923B162F300A8A037 /* RegisterViewController.swift */,
 				18EB28CB23B169E300A8A037 /* LoggedInViewController.swift */,
 				18EB28D723B6552B00A8A037 /* HTTPFunctions.swift */,
+				18EB28D923B8CDAA00A8A037 /* AlertFunctions.swift */,
 				18EB28C623B0147100A8A037 /* SubscribeViewController.swift */,
 				18EB289423AF730900A8A037 /* Main.storyboard */,
 				18EB289723AF730A00A8A037 /* Assets.xcassets */,
@@ -277,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18EB28DA23B8CDAA00A8A037 /* AlertFunctions.swift in Sources */,
 				18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */,
 				18EB289323AF730900A8A037 /* ViewController.swift in Sources */,
 				18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */,
