@@ -14,14 +14,16 @@ class LoggedInViewController: UIViewController {
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
     let alertFunctions: AlertFunctions = AlertFunctions()
+    let preferences = UserDefaults.standard
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let preferences = UserDefaults.standard
+//        let preferences = UserDefaults.standard
         
-        if(preferences.object(forKey: "session") != nil)
+        if (preferences.object(forKey: "session") != nil)
         {
             LoginDone()
         }
@@ -34,7 +36,7 @@ class LoggedInViewController: UIViewController {
     @IBAction func LoginPressed(_ sender: Any) {
         if(_login_button.titleLabel?.text == "Logout")
         {
-            let preferences = UserDefaults.standard
+//            let preferences = UserDefaults.standard
             preferences.removeObject(forKey: "session")
                 
             LoginToDo()
@@ -47,6 +49,7 @@ class LoggedInViewController: UIViewController {
             
         if(username == "" || password == "")
         {
+            alertFunctions.showAlert(self, "Error", msg: "Please fill all fields")
             return
         }
         DoLogin(username!, password!)
@@ -67,9 +70,14 @@ class LoggedInViewController: UIViewController {
                     self.alertFunctions.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
                         return  
                 }
-                let preferences = UserDefaults.standard
-                preferences.set(session_data, forKey: "session")
-                DispatchQueue.main.async (execute:self.LoginDone)
+//                let preferences = UserDefaults.standard
+                self.preferences.set(session_data, forKey: "session")
+                DispatchQueue.main.async {
+                    
+                    let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let newViewController = storyBoard.instantiateViewController(withIdentifier: "landing_page") as! ViewController
+                    self.present(newViewController, animated: true, completion: nil)
+                }
             }
         }
     }

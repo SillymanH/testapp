@@ -13,6 +13,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     @IBOutlet weak var youTubeWebView: WKWebView!
     @IBOutlet weak var suggestedVideosTable: UITableView!
+    let preferences = UserDefaults.standard
+   
+   
+    
+    
     // MARK: - Constants
     let appGroupName = "br.com.tntstudios.youtubeplayer"
     
@@ -122,16 +127,28 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
            youTubeWebView.loadHTMLString(html, baseURL: nil)
        }
        
-    @objc func onEnterFullScreen() {
-           print("Enter fullscreen")
-    }
-       
-    @objc func onCloseFullScreen() {
-           print("Exit fullscreen")
-    }
+//    @objc func onEnterFullScreen() {
+//           print("Enter fullscreen")
+//    }
+//
+//    @objc func onCloseFullScreen() {
+//           print("Exit fullscreen")
+//    }
+    
+    @IBAction func LikeIconPressed(_ sender: UIButton) {
+           
+           if (preferences.object(forKey: "session") == nil){
+               let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+               let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+               self.present(newViewController, animated: true, completion: nil)
+           }
+           //TODO: Implement the Like Request
+           print("Supposed to do the Like API request")
+       }
 
     
     func getSuggestedVideos(){
+        
         suggestedVideosTable.dataSource = self
         suggestedVideosTable.delegate = self
         suggestedVideosTable.reloadData()
@@ -139,19 +156,17 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-        
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videos.count
-        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel.text = videos[indexPath.row]
             return cell
-        
     }
 
 }
