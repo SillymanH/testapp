@@ -14,9 +14,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @IBOutlet weak var youTubeWebView: WKWebView!
     @IBOutlet weak var suggestedVideosTable: UITableView!
     let preferences = UserDefaults.standard
-   
-   
-    
+    let http:HTTPFunctions = HTTPFunctions();
+    let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
+//    let person:Person = Person()
     
     // MARK: - Constants
     let appGroupName = "br.com.tntstudios.youtubeplayer"
@@ -141,6 +141,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             
             //TODO: Implement the Like API
             print("Supposed to do the Like API request")
+            
+//            let paramToSend = "userId=" + user_name     +
+//                                     "&videoId=" + pass +
+//                                     "&videoURL=" + email +
+//                                     "&interaction=" + full_name +
+//                                     "&action=" + mobile_number
+            
+//            http.POST(interactionAPI!, <#T##params: String##String#>, completionBlock: <#T##(NSDictionary) -> Void#>)
+            
+            
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

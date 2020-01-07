@@ -21,7 +21,6 @@ class LoggedInViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-//        let preferences = UserDefaults.standard
         
         if (preferences.object(forKey: "session") != nil)
         {
@@ -36,12 +35,10 @@ class LoggedInViewController: UIViewController {
     @IBAction func LoginPressed(_ sender: Any) {
         if(_login_button.titleLabel?.text == "Logout")
         {
-//            let preferences = UserDefaults.standard
             preferences.removeObject(forKey: "session")
                 
             LoginToDo()
             return
-            
         }
         
         let username = _username.text
@@ -70,7 +67,6 @@ class LoggedInViewController: UIViewController {
                     self.alertFunctions.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
                         return  
                 }
-//                let preferences = UserDefaults.standard
                 self.preferences.set(session_data, forKey: "session")
                 DispatchQueue.main.async {
                     
@@ -82,22 +78,20 @@ class LoggedInViewController: UIViewController {
         }
     }
     
-    func LoginToDo()
-    {
+    func LoginToDo() {
+        
           _username.isEnabled = true
           _password.isEnabled = true
           
           _login_button.setTitle("Login", for: .normal)
-        
     }
     
-    func LoginDone()
-    {
+    func LoginDone() {
+        
           _username.isEnabled = false
           _password.isEnabled = false
           
           _login_button.setTitle("Logout", for: .normal)
-        
     }
 
 }
