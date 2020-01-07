@@ -13,6 +13,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     @IBOutlet weak var youTubeWebView: WKWebView!
     @IBOutlet weak var suggestedVideosTable: UITableView!
+    let preferences = UserDefaults.standard
+    let http:HTTPFunctions = HTTPFunctions();
+    let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
+//    let person:Person = Person()
+    
     // MARK: - Constants
     let appGroupName = "br.com.tntstudios.youtubeplayer"
     
@@ -121,17 +126,100 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
            
            youTubeWebView.loadHTMLString(html, baseURL: nil)
        }
-       
-    @objc func onEnterFullScreen() {
-           print("Enter fullscreen")
+    
+    func isSessionStored() -> Bool {
+        
+        if (preferences.object(forKey: "session") == nil){
+            return false
+        }
+        return true
     }
-       
-    @objc func onCloseFullScreen() {
-           print("Exit fullscreen")
+    
+    @IBAction func LikeIconPressed(_ sender: UIButton) {
+           
+        if isSessionStored() {
+            
+            //TODO: Implement the Like API
+            print("Supposed to do the Like API request")
+            
+//            let paramToSend = "userId=" + user_name     +
+//                                     "&videoId=" + pass +
+//                                     "&videoURL=" + email +
+//                                     "&interaction=" + full_name +
+//                                     "&action=" + mobile_number
+            
+//            http.POST(interactionAPI!, <#T##params: String##String#>, completionBlock: <#T##(NSDictionary) -> Void#>)
+            
+            
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
     }
-
+    
+    @IBAction func DislikeIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            //TODO: Implement the Dislike API
+            print("Supposed to do the Dislike API request")
+            
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
+    @IBAction func ShareIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            
+            //TODO: Implement the share API
+            print("Supposed to do the Share API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func DownloadIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+            
+            //TODO: Implement the Download API
+            print("Supposed to do the Download API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @IBAction func SaveIconPressed(_ sender: UIButton) {
+        
+        if isSessionStored() {
+                   
+            //TODO: Implement the Save API
+            print("Supposed to do the Save API request")
+        }else {
+            
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(newViewController, animated: true, completion: nil)
+        }
+    }
+    
     
     func getSuggestedVideos(){
+        
         suggestedVideosTable.dataSource = self
         suggestedVideosTable.delegate = self
         suggestedVideosTable.reloadData()
@@ -139,20 +227,20 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-        
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return videos.count
-        
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel.text = videos[indexPath.row]
             return cell
-        
     }
+    
+   
 
 }
 

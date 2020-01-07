@@ -135,31 +135,57 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+<<<<<<< HEAD
             uuid = "1E094BD6-8A0A-4040-9DBF-527A4749D293"
             shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TestApp/RegisterViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
-            landmarkName = "DoRegister(_:_:_:_:_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B153441F-19AD-42D9-B3E2-F5B682DDFA71"
+=======
+            uuid = "AE35186C-0407-417A-AE85-4BA89D36811F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+            filePath = "TestApp/LoggedInViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "LoginPressed(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ACC0071F-E6B3-4213-8C00-37FFB0CBEAD6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "LikeIconPressed(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6257A583-0EC2-4947-B83B-41250EE454B0"
+            shouldBeEnabled = "No"
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
             filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+<<<<<<< HEAD
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+=======
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
             landmarkName = "DoRegister(_:_:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -167,17 +193,86 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+<<<<<<< HEAD
+            uuid = "B153441F-19AD-42D9-B3E2-F5B682DDFA71"
+            shouldBeEnabled = "No"
+=======
+            uuid = "5CC6980A-E745-4DE4-9952-B2235EE0F51B"
+            shouldBeEnabled = "Yes"
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/RegisterViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+=======
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
+            landmarkName = "DoRegister(_:_:_:_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+<<<<<<< HEAD
             uuid = "394D0383-C0FB-42AA-90A7-557029026EFE"
+=======
+            uuid = "5AFF1FA4-77C0-40C0-95CE-60A5BACEE5E3"
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
+<<<<<<< HEAD
             startingLineNumber = "66"
             endingLineNumber = "66"
             landmarkName = "DoRegister(_:_:_:_:_:)"
             landmarkType = "7">
+=======
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "DoRegister(_:_:_:_:_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "5AFF1FA4-77C0-40C0-95CE-60A5BACEE5E3 - 79b3f8611c16ab05"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestApp.RegisterViewController.DoRegister(Swift.String, Swift.String, Swift.String, Swift.String, Swift.String) -&gt; ()"
+                  moduleName = "TestApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/RegisterViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "1259">
+               </Location>
+               <Location
+                  uuid = "5AFF1FA4-77C0-40C0-95CE-60A5BACEE5E3 - 51db0b717aefce55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (__C.NSDictionary) -&gt; () in TestApp.RegisterViewController.DoRegister(Swift.String, Swift.String, Swift.String, Swift.String, Swift.String) -&gt; ()"
+                  moduleName = "TestApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/RegisterViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "66"
+                  endingLineNumber = "66"
+                  offsetFromSymbolStart = "45">
+               </Location>
+            </Locations>
+>>>>>>> 4fe12a2cf677416f5ce8456c52a8aaa8d4e31a69
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
