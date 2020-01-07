@@ -71,6 +71,12 @@ class RegisterViewController: UIViewController {
                     return
                 }
                 
+                let info = response.value(forKey: "info") as! NSDictionary
+                let userId = info.value(forKey: "id")
+                print(userId!)
+//                let userId = info.value(forKey: "id")
+                
+                
                 //Navigating user to the login page
                 let doAction = UIAlertAction(title: "OK", style: .default) { (action) -> Void in
                 let loggedInVC = self.storyboard?.instantiateViewController(withIdentifier: "LoggedInViewController")
