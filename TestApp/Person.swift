@@ -28,6 +28,17 @@ class Person {
         self.mobileNumber = mobileNumber
     }
     
+    init() {
+           
+           self.userId = 0
+           self.username = ""
+           self.password = ""
+           self.email = ""
+           self.fullname = ""
+           self.mobileNumber = ""
+       }
+       
+    
     //Getters
         
     public func getUserId() -> Int {
