@@ -42,10 +42,9 @@ class HTTPFunctions {
             guard let server_response = json as? NSDictionary else {
                 return
             }
+            
             print(server_response)
             completionBlock(server_response)
-//            self.server_response = resp
-//            self.setResponse(acquiredResponse:resp)
         })
         task.resume()
     }

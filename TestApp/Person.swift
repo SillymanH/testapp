@@ -12,17 +12,15 @@ class Person {
     
     private var userId: Int
     private var username: String
-    private var password: String
     private var email: String
     private var fullname:String
     private var mobileNumber:String
     
-    init(_ userId:Int,_ username:String,_ password: String,_ email:String,
+    init(_ userId:Int,_ username:String,_ email:String,
                                         _ fullname:String,_ mobileNumber:String) {
         
         self.userId = userId
         self.username = username
-        self.password = password
         self.email = email
         self.fullname = fullname
         self.mobileNumber = mobileNumber
@@ -32,7 +30,6 @@ class Person {
            
            self.userId = 0
            self.username = ""
-           self.password = ""
            self.email = ""
            self.fullname = ""
            self.mobileNumber = ""
@@ -50,11 +47,6 @@ class Person {
         
         return self.username
     }
-    
-    public func getPassword() -> String {
-           
-           return self.password
-       }
     
     public func getEmail() -> String {
            
@@ -81,11 +73,6 @@ class Person {
     public func setUsername(_ username:String) {
         
      self.username = username
-    }
-    
-    public func setPassword(_ password:String) {
-        
-     self.password = password
     }
     
     public func setEmail(_ email:String) {
