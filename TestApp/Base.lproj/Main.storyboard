@@ -37,6 +37,7 @@
                                 <state key="normal" title="Button" image="plus.rectangle.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
+                                <state key="selected" image="plus.rectangle" catalog="system"/>
                                 <connections>
                                     <action selector="SaveIconPressed:" destination="mKG-jX-EkT" eventType="touchUpInside" id="E3Y-GR-M4F"/>
                                 </connections>
@@ -47,6 +48,7 @@
                                 <state key="normal" title="Button" image="hand.thumbsup.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
+                                <state key="selected" image="hand.thumbsup" catalog="system"/>
                                 <connections>
                                     <action selector="LikeIconPressed:" destination="mKG-jX-EkT" eventType="touchUpInside" id="All-zP-dMY"/>
                                 </connections>
@@ -57,9 +59,7 @@
                                 <state key="normal" title="Button" image="hand.thumbsdown.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
-                                <connections>
-                                    <action selector="DislikeIconPressed:" destination="mKG-jX-EkT" eventType="touchUpInside" id="7Rg-EG-WXU"/>
-                                </connections>
+                                <state key="selected" image="hand.thumbsdown" catalog="system"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3J-PK-vUN" userLabel="Share Button">
                                 <rect key="frame" x="197" y="288" width="40" height="40"/>
@@ -152,6 +152,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="QOy-Xb-wUE"/>
                     <connections>
+                        <outlet property="dislikeBtn" destination="cGG-QK-szI" id="IZL-Xx-T9y"/>
+                        <outlet property="likeBtn" destination="s0l-Dd-oiu" id="JWl-Ad-rvE"/>
+                        <outlet property="saveBtn" destination="FzP-BL-a8v" id="3UT-5S-jvk"/>
                         <outlet property="suggestedVideosTable" destination="FFt-Gj-q6G" id="6ar-eU-MgG"/>
                         <outlet property="youTubeWebView" destination="8cf-0A-bGi" id="rN2-kM-Rve"/>
                     </connections>
@@ -374,9 +377,12 @@
         <image name="arrow.down.circle.fill" catalog="system" width="64" height="62"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
         <image name="checkmark.square" catalog="system" width="64" height="56"/>
+        <image name="hand.thumbsdown" catalog="system" width="60" height="64"/>
         <image name="hand.thumbsdown.fill" catalog="system" width="64" height="64"/>
+        <image name="hand.thumbsup" catalog="system" width="60" height="64"/>
         <image name="hand.thumbsup.fill" catalog="system" width="64" height="64"/>
         <image name="person.crop.circle" catalog="system" width="64" height="62"/>
+        <image name="plus.rectangle" catalog="system" width="64" height="48"/>
         <image name="plus.rectangle.fill" catalog="system" width="64" height="48"/>
         <image name="square" catalog="system" width="64" height="56"/>
     </resources>

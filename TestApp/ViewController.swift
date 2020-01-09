@@ -11,26 +11,89 @@ import WebKit
 
 class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegate, UITableViewDataSource{
 
+    //Outlets
     @IBOutlet weak var youTubeWebView: WKWebView!
     @IBOutlet weak var suggestedVideosTable: UITableView!
-    let preferences = UserDefaults.standard
-    let http:HTTPFunctions = HTTPFunctions();
+    @IBOutlet weak var likeBtn: UIButton!
+    @IBOutlet weak var dislikeBtn: UIButton!
+    @IBOutlet weak var saveBtn: UIButton!
+    
+    //APIs
     let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
-//    let person:Person = Person()
+    let randomVideosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
+    let videosAPI = URL(string: "http://localhost:8888/test_db/Videos.php")
+    
+    //Global Instances
+    let http:HTTPFunctions = HTTPFunctions();
+    let person:Person = Person()
+    var video:Video = Video()
+    let alertFunctions: AlertFunctions = AlertFunctions()
+    
+    //Global Variables
+    var videosArray = [String]()
+        
+//["Video 1",
+//"Video 2",
+//"Video 3",
+//"Video 4",
+//"Video 5",
+//"Video 6"]
+    
+    let preferences = UserDefaults.standard
     
     // MARK: - Constants
     let appGroupName = "br.com.tntstudios.youtubeplayer"
     
-    var videos : [String] =  ["Video 1",
-                              "Video 2",
-                              "Video 3",
-                              "Video 4",
-                              "Video 5",
-                              "Video 6"]
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        videosArray = getRandomVideos(6)
+        
+        let youtubeVideoId = videosArray[0]
+        
+        let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
+        http.POST(self.videosAPI!, paramToSend) { response in
+            
+            guard let session_data = response["success"] as? Int else{
+                
+                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                return
+            }
+            
+            if session_data == 0 {
+                
+                self.alertFunctions.showAlert(self ,"Error", msg: "Could not load video!")
+                    return
+            }
+            
+            if let info = response["info"] as? NSDictionary  {
+                
+                let videoId = (info.value(forKey: "video_id") as? NSString)?.integerValue
+                let channelId = (info.value(forKey: "channel_id") as? NSString)?.integerValue
+                let videoLikes = (info.value(forKey: "video_likes") as? NSString)?.integerValue
+                let videoDislikes = (info.value(forKey: "video_dislikes") as? NSString)?.integerValue
+                let videoShares = (info.value(forKey: "video_shares") as? NSString)?.integerValue
+                let videoDownloads = (info.value(forKey: "video_downloads") as? NSString)?.integerValue
+                let videoSaves = (info.value(forKey: "video_saves") as? NSString)?.integerValue
+                let videoTitle = info.value(forKey: "video_title") as? String
+                
+                //Setting video info
+                self.video.setVideoId(videoId!)
+                self.video.setChannelId(channelId!)
+                self.video.setVideoLikes(videoLikes!)
+                self.video.setVideoDislikes(videoDislikes!)
+                self.video.setVideoShares(videoShares!)
+                self.video.setVideoDownloads(videoDownloads!)
+                self.video.setVideoSaves(videoSaves!)
+                self.video.setVideoTitle(videoTitle!)
+                self.video.setYoutubeId(youtubeVideoId)
+            }
+            
+        }
+
         youTubeWebView.navigationDelegate = self
         youTubeWebView.configuration.allowsInlineMediaPlayback = false
         loadYoutubeIframe(youtubeVideoId: "kBmHYr_dUZc") // your Youtube video ID.
@@ -136,19 +199,46 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
     
     @IBAction func LikeIconPressed(_ sender: UIButton) {
+        
+        let interaction = 1
+        let action:String = isInteractionBtnClicked(sender)
            
         if isSessionStored() {
             
             //TODO: Implement the Like API
             print("Supposed to do the Like API request")
             
-//            let paramToSend = "userId=" + user_name     +
-//                                     "&videoId=" + pass +
-//                                     "&videoURL=" + email +
-//                                     "&interaction=" + full_name +
-//                                     "&action=" + mobile_number
+            //Getting User info
+            let userId = self.person.getUserId()
             
-//            http.POST(interactionAPI!, <#T##params: String##String#>, completionBlock: <#T##(NSDictionary) -> Void#>)
+            //Getting video info
+            let videoId = self.video.getVideoId()
+            let youtubeVideoId = self.video.getYouTubeId()
+            
+            let paramToSend = "userId=\(userId)" +
+                              "&videoId=\(videoId)" +
+                              "&videoURL=\(youtubeVideoId)" +
+                              "&interaction=\(interaction)" +
+                              "&action=" + action
+            
+            http.POST(interactionAPI!, paramToSend){ response in
+
+                guard let session_data = response["success"] as? Int else{
+                    
+                    self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                        return
+                }
+                
+                if session_data == 0 {
+                    
+                    //TODO: Handle having an invalid email address
+                    self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
+                        return
+                }
+                
+                //TODO: Increment the interaction stats
+                
+            }
             
             
         }else {
@@ -230,17 +320,63 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return videos.count
+        return videosArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
-        cell.suggestedVideosLabel.text = videos[indexPath.row]
+        cell.suggestedVideosLabel.text = videosArray[indexPath.row]
             return cell
     }
     
-   
-
+    func getRandomVideos(_ numberOfVideos:Int) -> Array<String> {
+        
+        var videosArray = [String]()
+        
+        let paramToSend = "numberOfVideos=\(numberOfVideos)"
+        http.POST(self.randomVideosAPI!, paramToSend) { response in
+            
+            guard let session_data = response["success"] as? Int else{
+                
+                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                return
+            }
+            
+            if session_data == 0 {
+                
+                self.alertFunctions.showAlert(self ,"Error", msg: "Could not load videos!")
+                    return
+            }
+            
+            if let videos = response["videos"] as? NSDictionary  {
+                
+                for (key, value) in videos {
+                    
+                    if (key as! String == "youtubeVideoId") {
+                        
+                        videosArray.append(value as! String)
+                    }
+                }
+            }
+        }
+        return videosArray
+    }
+    
+    private func isInteractionBtnClicked(_ button:UIButton) -> String {
+        
+        var action:String
+        
+        if (button.isSelected){
+            
+            likeBtn.isSelected = false
+            action = "SET_INTERACTION"
+        } else {
+            
+            likeBtn.isSelected = true
+            action = "UNSET_INTERACTION"
+        }
+        return action
+    }
 }
 

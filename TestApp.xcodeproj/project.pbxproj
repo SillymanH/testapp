@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1817382E23C296CA004556C8 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817382D23C296CA004556C8 /* Person.swift */; };
+		18DF4FB223C682410062CFBD /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DF4FB123C682410062CFBD /* Video.swift */; };
 		18EB288F23AF730900A8A037 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB288E23AF730900A8A037 /* AppDelegate.swift */; };
 		18EB289123AF730900A8A037 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB289023AF730900A8A037 /* SceneDelegate.swift */; };
 		18EB289323AF730900A8A037 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18EB289223AF730900A8A037 /* ViewController.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		1817382D23C296CA004556C8 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		18DF4FB123C682410062CFBD /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
 		18EB288B23AF730900A8A037 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18EB288E23AF730900A8A037 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		18EB289023AF730900A8A037 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				18EB28C923B162F300A8A037 /* RegisterViewController.swift */,
 				18EB28CB23B169E300A8A037 /* LoggedInViewController.swift */,
 				1817382D23C296CA004556C8 /* Person.swift */,
+				18DF4FB123C682410062CFBD /* Video.swift */,
 				18EB28D723B6552B00A8A037 /* HTTPFunctions.swift */,
 				18EB28D923B8CDAA00A8A037 /* AlertFunctions.swift */,
 				18EB289423AF730900A8A037 /* Main.storyboard */,
@@ -287,6 +290,7 @@
 				18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */,
 				18EB288F23AF730900A8A037 /* AppDelegate.swift in Sources */,
 				18EB289123AF730900A8A037 /* SceneDelegate.swift in Sources */,
+				18DF4FB223C682410062CFBD /* Video.swift in Sources */,
 				18EB28D823B6552B00A8A037 /* HTTPFunctions.swift in Sources */,
 				18EB28C123AF742A00A8A037 /* PrototypeViewCell.swift in Sources */,
 				18EB28CC23B169E300A8A037 /* LoggedInViewController.swift in Sources */,
