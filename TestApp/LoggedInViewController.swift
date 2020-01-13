@@ -62,7 +62,7 @@ class LoggedInViewController: UIViewController {
                           "&password=" + psw
         
         let httpRequest: HTTPFunctions = HTTPFunctions()
-        httpRequest.POST(url!, paramToSend){ Response in
+        httpRequest.POST(url!, paramToSend) { Response in
             
             guard let session_data = Response["success"] as? Int else{
                 

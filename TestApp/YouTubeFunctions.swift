@@ -68,7 +68,7 @@ class YoutubeFunctions {
     
     // MARK: - Helpers
     
-    func loadYoutubeIframe(youtubeVideoId: String,_ youTubeWebView:WKWebView ) {
+    func loadYoutubeIframe(_ youtubeVideoId: String,_ youTubeWebView:WKWebView ) {
         
         let html =
             "<html>" +

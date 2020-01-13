@@ -21,7 +21,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     //APIs
     let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
     let randomVideosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
-    let videosAPI = URL(string: "http://localhost:8888/test_db/Videos.php")
+    let videosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
     
     //Global Instances
     let youtube:YoutubeFunctions = YoutubeFunctions()
@@ -31,7 +31,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     let alertFunctions: AlertFunctions = AlertFunctions()
     
     //Global Variables
-    var videosArray = [String]()
+    var videoArray:Array<String> = []
+//    var youtubeVideoId:String = ""
+    
         
 //["Video 1",
 //"Video 2",
@@ -45,18 +47,23 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
+        reloadVideoView()
+        reloadVideoTable()
+    }
+
+    func reloadVideoView() {
         
-        videosArray = getRandomVideos(6)
-        
-        let youtubeVideoId = videosArray[0]
-        
+        self.videoArray = getRandomVideos(6)
+    
+        let youtubeVideoId = self.videoArray[0]
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
-        http.POST(self.videosAPI!, paramToSend) { response in
+        self.http.POST(self.videosAPI!, paramToSend) { response in
             
-            guard let session_data = response["success"] as? Int else{
-                
+            guard let session_data = response["success"] as? Int else {
+            
                 self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
-                return
+                    return
             }
             
             if session_data == 0 {
@@ -75,7 +82,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 let videoDownloads = (info.value(forKey: "video_downloads") as? NSString)?.integerValue
                 let videoSaves = (info.value(forKey: "video_saves") as? NSString)?.integerValue
                 let videoTitle = info.value(forKey: "video_title") as? String
-                
+
                 //Setting video info
                 self.video.setVideoId(videoId!)
                 self.video.setChannelId(channelId!)
@@ -88,24 +95,17 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 self.video.setYoutubeId(youtubeVideoId)
             }
             
+            DispatchQueue.main.async {
+                
+                self.youTubeWebView.navigationDelegate = self
+                self.youTubeWebView.configuration.allowsInlineMediaPlayback = false
+                self.youtube.loadYoutubeIframe(youtubeVideoId, self.youTubeWebView) //Loading video on the video view using youtube id
+            }
         }
 
-        youTubeWebView.navigationDelegate = self
-        youTubeWebView.configuration.allowsInlineMediaPlayback = false
-        self.youtube.loadYoutubeIframe(youtubeVideoId: "kBmHYr_dUZc", youTubeWebView) // your Youtube video ID.
-        
-        //Getting suggested videos
-        getSuggestedVideos()
     }
     
-//     Programatically navigate to a new screen
-//    @IBAction func Gotosubscribe(_ sender: Any) {
-//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//        let newViewController = storyBoard.instantiateViewController(withIdentifier: "subscribe_view_controller") as! SubscribeViewController
-//                self.present(newViewController, animated: true, completion: nil)
-//    }
-    
-    func getSuggestedVideos(){
+    func reloadVideoTable(){
         
         suggestedVideosTable.dataSource = self
         suggestedVideosTable.delegate = self
@@ -117,13 +117,13 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return videosArray.count
+        return videoArray.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
-        cell.suggestedVideosLabel.text = videosArray[indexPath.row]
+        cell.suggestedVideosLabel.text = videoArray[indexPath.row]
             return cell
     }
     
@@ -158,7 +158,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                               "&interaction=\(interaction)" +
                               "&action=" + action
             
-            http.POST(interactionAPI!, paramToSend){ response in
+            self.http.POST(interactionAPI!, paramToSend){ response in
 
                 guard let session_data = response["success"] as? Int else{
                     
@@ -197,8 +197,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
             self.present(newViewController, animated: true, completion: nil)
         }
-        
-        
     }
     
     @IBAction func ShareIconPressed(_ sender: UIButton) {
@@ -245,11 +243,12 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     func getRandomVideos(_ numberOfVideos:Int) -> Array<String> {
         
-        var videosArray = [String]()
+        var videosArray:Array<String> = []
         
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
-        http.POST(self.randomVideosAPI!, paramToSend) { response in
-            
+        
+        self.http.POST(self.randomVideosAPI!, paramToSend) { response in
+    
             guard let session_data = response["success"] as? Int else{
                 
                 self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
@@ -262,13 +261,15 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                     return
             }
             
-            if let videos = response["videos"] as? NSDictionary  {
+            if let videos = response["info"] as? [[String : Any]] {
                 
-                for (key, value) in videos {
+                for video in videos {
                     
-                    if (key as! String == "youtubeVideoId") {
-                        
-                        videosArray.append(value as! String)
+                    for (key, value) in video {
+            
+                        if (key == "youtube_video_id") {
+                            videosArray.append(value as! String)
+                        }
                     }
                 }
             }
