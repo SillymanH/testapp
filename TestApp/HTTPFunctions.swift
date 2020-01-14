@@ -45,7 +45,5 @@ class HTTPFunctions {
             completionBlock(server_response)
         })
         task.resume()
-        sleep(1)
-        
     }
 }

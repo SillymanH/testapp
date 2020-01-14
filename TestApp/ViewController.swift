@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegate, UITableViewDataSource{
+class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegate, UITableViewDataSource {
 
     //Outlets
     @IBOutlet weak var youTubeWebView: WKWebView!
@@ -26,9 +26,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     //Global Instances
     let youtube:YoutubeFunctions = YoutubeFunctions()
     let http:HTTPFunctions = HTTPFunctions();
-    let person:Person = Person()
     var video:Video = Video()
     let alertFunctions: AlertFunctions = AlertFunctions()
+    var login:LoggedInViewController = LoggedInViewController()
     
     //Global Variables
     var videoArray:Array<String> = []
@@ -143,10 +143,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         if isSessionStored() {
             
             //TODO: Implement the Like API
-            print("Supposed to do the Like API request")
+//            print("Supposed to do the Like API request")
             
             //Getting User info
-            let userId = self.person.getUserId()
+            let userId = self.login.user.getUserId()
             
             //Getting video info
             let videoId = self.video.getVideoId()
@@ -180,8 +180,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-            self.present(newViewController, animated: true, completion: nil)
+            self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(self.login, animated: true)
         }
     }
     
@@ -274,6 +274,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 }
             }
         }
+        sleep(1)
         return videosArray
     }
     

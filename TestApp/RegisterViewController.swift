@@ -10,6 +10,7 @@ import UIKit
 
 class RegisterViewController: UIViewController {
     
+    //Outlets
     @IBOutlet weak var _fullname: UITextField!
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
@@ -17,8 +18,13 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var _email: UITextField!
     @IBOutlet weak var _mobileNumber: UITextField!
     @IBOutlet weak var _checkbox: UIButton!
+
+    //APIs
+    let url = URL(string: "http://localhost:8888/test_db/index.php/")
+    
+    //Global Instances
     let alertFunctions: AlertFunctions = AlertFunctions()
-   
+    let sendRequest:HTTPFunctions = HTTPFunctions()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,16 +58,13 @@ class RegisterViewController: UIViewController {
     
     func DoRegister(_ full_name:String,_ user_name:String,_ pass:String ,_ email:String,_ mobile_number:String){
         
-        let url = URL(string: "http://localhost:8888/test_db/index.php/")
+        let paramToSend = "username=\(user_name)" +
+                          "&password=\(pass)" +
+                          "&email=\(email)" +
+                          "&fullname=\(full_name)" +
+                          "&mobileNumber=\(mobile_number)"
         
-        let paramToSend = "username=" + user_name +
-                          "&password=" + pass +
-                          "&email=" + email +
-                          "&fullname=" + full_name +
-                          "&mobileNumber=" + mobile_number
-        
-        let sendRequest:HTTPFunctions = HTTPFunctions()
-        sendRequest.POST(url!, paramToSend) { response in
+        self.sendRequest.POST(url!, paramToSend) { response in
             
             guard let session_data = response["success"] as? Int else{
                 
@@ -80,7 +83,6 @@ class RegisterViewController: UIViewController {
                     let loggedInVC = self.storyboard?.instantiateViewController(withIdentifier: "LoggedInViewController")
                     self.present(loggedInVC!, animated: true, completion: nil)}
                     self.alertFunctions.showActionAlert(self, "Success", "You have been registered successfully.", doAction)
-            
         }
     }
     

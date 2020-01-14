@@ -10,13 +10,22 @@ import UIKit
 
 class LoggedInViewController: UIViewController {
 
+    
+    //Outlets
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
-    let alertFunctions: AlertFunctions = AlertFunctions()
-    let user:Person = Person()
-    let preferences = UserDefaults.standard
+
+    // APIs
+    let url = URL(string: "http://localhost:8888/test_db/index.php/")
     
+    //Global Instances
+    let alertFunctions: AlertFunctions = AlertFunctions()
+    let httpRequest: HTTPFunctions = HTTPFunctions()
+    var user:Person = Person()
+    
+    //Global Variables
+    let preferences = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +45,7 @@ class LoggedInViewController: UIViewController {
     }
     
     @IBAction func LoginPressed(_ sender: Any) {
+        
         if(_login_button.titleLabel?.text == "Logout")
         {
             preferences.removeObject(forKey: "session")
@@ -56,13 +66,12 @@ class LoggedInViewController: UIViewController {
     }
     
     func DoLogin(_ user:String, _ psw:String) {
-        let url = URL(string: "http://localhost:8888/test_db/index.php/")
         
-        let paramToSend = "username=" + user +
-                          "&password=" + psw
+        let paramToSend = "username=\(user)" +
+                          "&password=\(psw)"
         
-        let httpRequest: HTTPFunctions = HTTPFunctions()
-        httpRequest.POST(url!, paramToSend) { Response in
+        
+        self.httpRequest.POST(self.url!, paramToSend) { Response in
             
             guard let session_data = Response["success"] as? Int else{
                 
@@ -97,14 +106,10 @@ class LoggedInViewController: UIViewController {
                 self.preferences.set(user_name, forKey: "username")
                 self.preferences.set(email, forKey: "email")
                 self.preferences.set(mobile_number, forKey: "mobileNumber")
-                
                 self.preferences.set(session_data, forKey: "session")
-                DispatchQueue.main.async {
                 
-                let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let newViewController = storyBoard.instantiateViewController(withIdentifier: "landing_page") as! ViewController
-                self.present(newViewController, animated: true, completion: nil)
-                    
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true)
                 }
             }
         }
