@@ -32,17 +32,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     //Global Variables
     var videoArray:Array<String> = []
-//    var youtubeVideoId:String = ""
-    
-        
-//["Video 1",
-//"Video 2",
-//"Video 3",
-//"Video 4",
-//"Video 5",
-//"Video 6"]
-    
     let preferences = UserDefaults.standard
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,9 +133,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
            
         if isSessionStored() {
             
-            //TODO: Implement the Like API
-//            print("Supposed to do the Like API request")
-            
             //Getting User info
             let userId = self.login.user.getUserId()
             
@@ -158,7 +146,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                               "&interaction=\(interaction)" +
                               "&action=" + action
             
-            self.http.POST(interactionAPI!, paramToSend){ response in
+            self.http.POST(self.interactionAPI!, paramToSend){ response in
 
                 guard let session_data = response["success"] as? Int else{
                     
@@ -173,9 +161,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                         return
                 }
                 
-                //TODO: Increment the interaction stat
+                if let message = response["message"] as? String  {
+                    print(message)
+                }
             }
-            
             
         }else {
             
