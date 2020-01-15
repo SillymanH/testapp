@@ -219,13 +219,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            //TODO: Implement the share API
-            print("Supposed to do the Share API request")
+            let url = "http://www.youtube.com/embed/\(videoArray[0])"
+            let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
+            present(activityController, animated: true, completion: nil)
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
             self.present(self.login, animated: true, completion: nil)
+            
+            //TODO: Implement the share API 
         }
     }
     
