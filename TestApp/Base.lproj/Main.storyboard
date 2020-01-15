@@ -60,6 +60,9 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
                                 <state key="selected" image="hand.thumbsdown" catalog="system"/>
+                                <connections>
+                                    <action selector="DislikeIconPressed:" destination="mKG-jX-EkT" eventType="touchUpInside" id="PXz-Rh-O2A"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3J-PK-vUN" userLabel="Share Button">
                                 <rect key="frame" x="197" y="288" width="40" height="40"/>

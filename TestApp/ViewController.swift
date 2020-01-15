@@ -33,6 +33,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     //Global Variables
     var videoArray:Array<String> = []
     let preferences = UserDefaults.standard
+    var interaction:Int = 0
     
     
     override func viewDidLoad() {
@@ -128,7 +129,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func LikeIconPressed(_ sender: UIButton) {
         
-        let interaction = 1
+        self.interaction = 1
         let action:String = isInteractionBtnClicked(sender)
            
         if isSessionStored() {
@@ -143,7 +144,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             let paramToSend = "userId=\(userId)" +
                               "&videoId=\(videoId)" +
                               "&videoURL=\(youtubeVideoId)" +
-                              "&interaction=\(interaction)" +
+                              "&interaction=\(self.interaction)" +
                               "&action=" + action
             
             self.http.POST(self.interactionAPI!, paramToSend){ response in
@@ -161,9 +162,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                         return
                 }
                 
-                if let message = response["message"] as? String  {
-                    print(message)
-                }
             }
             
         }else {
@@ -176,15 +174,44 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func DislikeIconPressed(_ sender: UIButton) {
         
+        self.interaction = 2
+        let action:String = isInteractionBtnClicked(sender)
+        
         if isSessionStored() {
-            //TODO: Implement the Dislike API
-            print("Supposed to do the Dislike API request")
             
+            //Getting User info
+            let userId =  preferences.integer(forKey: "userId")
+            
+            //Getting video info
+            let videoId = self.video.getVideoId()
+            let youtubeVideoId = self.video.getYouTubeId()
+                      
+            let paramToSend = "userId=\(userId)" +
+                              "&videoId=\(videoId)" +
+                              "&videoURL=\(youtubeVideoId)" +
+                              "&interaction=\(self.interaction)" +
+                              "&action=" + action
+            
+            self.http.POST(self.interactionAPI!, paramToSend){ response in
+                
+                guard let session_data = response["success"] as? Int else{
+                              
+                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                    return
+                }
+                
+                if session_data == 0 {
+                    
+                    //TODO: Handle having an invalid email address
+                    self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
+                        return
+                }
+            }
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-            self.present(newViewController, animated: true, completion: nil)
+            self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(self.login, animated: true, completion: nil)
         }
     }
     
@@ -197,8 +224,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-            self.present(newViewController, animated: true, completion: nil)
+            self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(self.login, animated: true, completion: nil)
         }
     }
     
@@ -211,8 +238,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-            self.present(newViewController, animated: true, completion: nil)
+            self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(self.login, animated: true, completion: nil)
         }
     }
     
@@ -225,8 +252,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let newViewController = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
-            self.present(newViewController, animated: true, completion: nil)
+            self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
+            self.present(self.login, animated: true, completion: nil)
         }
     }
     
@@ -273,11 +300,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if (button.isSelected){
             
-            likeBtn.isSelected = false
+            button.isSelected = false
             action = "UNSET_INTERACTION"
         } else {
             
-            likeBtn.isSelected = true
+            button.isSelected = true
             action = "SET_INTERACTION"
         }
         return action
