@@ -134,8 +134,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         if isSessionStored() {
             
             //Getting User info
-            let userId = self.login.user.getUserId()
-            
+            let userId =  preferences.integer(forKey: "userId")
+  
             //Getting video info
             let videoId = self.video.getVideoId()
             let youtubeVideoId = self.video.getYouTubeId()
@@ -274,11 +274,11 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         if (button.isSelected){
             
             likeBtn.isSelected = false
-            action = "SET_INTERACTION"
+            action = "UNSET_INTERACTION"
         } else {
             
             likeBtn.isSelected = true
-            action = "UNSET_INTERACTION"
+            action = "SET_INTERACTION"
         }
         return action
     }

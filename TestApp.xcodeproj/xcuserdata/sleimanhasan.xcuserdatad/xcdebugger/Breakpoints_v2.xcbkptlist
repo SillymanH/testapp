@@ -7,24 +7,8 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "22AB07E2-C0A5-48B6-B496-976A8DC804B2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TestApp/ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
-            landmarkName = "LikeIconPressed(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "EF1C39A7-F455-42EF-80F0-91AEFA28F72B"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestApp/ViewController.swift"
@@ -40,7 +24,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EEC8A98E-5FB3-4DC8-89EF-899550F08E64"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestApp/ViewController.swift"
@@ -53,7 +37,7 @@
             <Locations>
                <Location
                   uuid = "EEC8A98E-5FB3-4DC8-89EF-899550F08E64 - 49e17f9804e7a5b7"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "TestApp.ViewController.LikeIconPressed(__C.UIButton) -&gt; ()"
@@ -64,11 +48,11 @@
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "149"
                   endingLineNumber = "149"
-                  offsetFromSymbolStart = "2055">
+                  offsetFromSymbolStart = "2512">
                </Location>
                <Location
                   uuid = "EEC8A98E-5FB3-4DC8-89EF-899550F08E64 - ecfda094187f3352"
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "closure #1 (__C.NSDictionary) -&gt; () in TestApp.ViewController.LikeIconPressed(__C.UIButton) -&gt; ()"
@@ -82,6 +66,118 @@
                   offsetFromSymbolStart = "55">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C2925879-BDF4-441F-937F-EF143C7F4E2A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/HTTPFunctions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "47"
+            endingLineNumber = "47"
+            landmarkName = "POST(_:_:completionBlock:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/HTTPFunctions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "POST(_:_:completionBlock:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B - 827de87286642528"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TestApp.HTTPFunctions.POST(_: Foundation.URL, _: Swift.String, completionBlock: (__C.NSDictionary) -&gt; ()) -&gt; ()"
+                  moduleName = "TestApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/HTTPFunctions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22"
+                  offsetFromSymbolStart = "1135">
+               </Location>
+               <Location
+                  uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B - 1cf06432793bd72a"
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestApp.HTTPFunctions.POST(_: Foundation.URL, _: Swift.String, completionBlock: (__C.NSDictionary) -&gt; ()) -&gt; ()"
+                  moduleName = "TestApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/HTTPFunctions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25"
+                  offsetFromSymbolStart = "270">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9E2A322F-A77D-4512-B03A-0240ECFE7F6F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
+            landmarkName = "LikeIconPressed(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B28A16B1-FD8A-4474-B4B9-D3CA89A813D6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
+            landmarkName = "LikeIconPressed(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8FF54EF7-AC99-489F-AA6F-5474A2DEF9EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "LikeIconPressed(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
