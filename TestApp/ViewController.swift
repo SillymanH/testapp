@@ -240,6 +240,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             http.Download(url)
             self.alertFunctions.showAlert(self, "Success", msg: "Download Completed")
             
+            //TODO: Implement the download API
+            
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

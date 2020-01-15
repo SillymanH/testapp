@@ -50,7 +50,7 @@ class HTTPFunctions {
     
     func Download(_ url_string:String) {
 
-        let sampleURL = "http://localhost:8888/test_db/videos/demo.mov"
+        let sampleURL = "http://localhost:8888/test_db/videos/demo.mov" // Demo video just to test the function
 
         DispatchQueue.global(qos: .background).async {
            if let url = URL(string: sampleURL), let urlData = NSData(contentsOf: url) {
