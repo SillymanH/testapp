@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Photos
 
 class HTTPFunctions {
     
@@ -46,4 +47,36 @@ class HTTPFunctions {
         })
         task.resume()
     }
+    
+    func Download(_ url_string:String) {
+
+        let sampleURL = "http://localhost:8888/test_db/videos/demo.mov"
+
+        DispatchQueue.global(qos: .background).async {
+           if let url = URL(string: sampleURL), let urlData = NSData(contentsOf: url) {
+
+              let galleryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
+              let filePath="\(galleryPath)/demo2.mov"
+
+            DispatchQueue.main.async {
+
+                urlData.write(toFile: filePath, atomically: true)
+                PHPhotoLibrary.shared().performChanges({
+                    
+                    //TODO: Add spinner
+
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL:
+                    URL(fileURLWithPath: filePath))}) { success, error in
+
+                        if success {
+                            print("Succesfully Saved")
+                    } else {
+                            print(error?.localizedDescription as Any)
+                            
+                        }
+                    }
+                 }
+              }
+           }
+        }
 }

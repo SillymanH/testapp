@@ -228,7 +228,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
             self.present(self.login, animated: true, completion: nil)
             
-            //TODO: Implement the share API 
+            //TODO: Implement the share API
         }
     }
     
@@ -236,8 +236,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            //TODO: Implement the Download API
-            print("Supposed to do the Download API request")
+            let url = "http://www.youtube.com/embed/\(videoArray[0])"
+            http.Download(url)
+            self.alertFunctions.showAlert(self, "Success", msg: "Download Completed")
+            
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
