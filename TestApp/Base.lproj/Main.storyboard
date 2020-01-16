@@ -80,6 +80,7 @@
                                 <state key="normal" title="Button" image="arrow.down.circle.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="black"/>
                                 </state>
+                                <state key="selected" image="arrow.down.circle" catalog="system"/>
                                 <connections>
                                     <action selector="DownloadIconPressed:" destination="mKG-jX-EkT" eventType="touchUpInside" id="56I-ti-CwT"/>
                                 </connections>
@@ -377,6 +378,7 @@
     </scenes>
     <resources>
         <image name="Dark Image" width="3504" height="410"/>
+        <image name="arrow.down.circle" catalog="system" width="64" height="62"/>
         <image name="arrow.down.circle.fill" catalog="system" width="64" height="62"/>
         <image name="arrowshape.turn.up.right.fill" catalog="system" width="64" height="52"/>
         <image name="checkmark.square" catalog="system" width="64" height="56"/>

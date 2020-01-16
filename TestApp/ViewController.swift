@@ -27,7 +27,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     let youtube:YoutubeFunctions = YoutubeFunctions()
     let http:HTTPFunctions = HTTPFunctions();
     var video:Video = Video()
-    let alertFunctions: AlertFunctions = AlertFunctions()
+    let alertFunctions:AlertFunctions = AlertFunctions()
     var login:LoggedInViewController = LoggedInViewController()
     
     //Global Variables
@@ -129,41 +129,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func LikeIconPressed(_ sender: UIButton) {
         
-        self.interaction = 1
-        let action:String = isInteractionBtnClicked(sender)
+        self.interaction = 1 // interaction = 1 means LIKE interactino
+        var action:String = "SET_INTERACTION"
+        
+        if (!isInteractionBtnClicked(sender)) {
+            
+            action = "UNSET_INTERACTION"
+        }
            
         if isSessionStored() {
-            
-            //Getting User info
-            let userId =  preferences.integer(forKey: "userId")
-  
-            //Getting video info
-            let videoId = self.video.getVideoId()
-            let youtubeVideoId = self.video.getYouTubeId()
-            
-            let paramToSend = "userId=\(userId)" +
-                              "&videoId=\(videoId)" +
-                              "&videoURL=\(youtubeVideoId)" +
-                              "&interaction=\(self.interaction)" +
-                              "&action=" + action
-            
-            self.http.POST(self.interactionAPI!, paramToSend){ response in
-
-                guard let session_data = response["success"] as? Int else{
-                    
-                    self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
-                        return
-                }
-                
-                if session_data == 0 {
-                    
-                    //TODO: Handle having an invalid email address
-                    self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
-                        return
-                }
-                
-            }
-            
+            doInteraction(action: action, interaction: self.interaction)
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -174,39 +149,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func DislikeIconPressed(_ sender: UIButton) {
         
-        self.interaction = 2
-        let action:String = isInteractionBtnClicked(sender)
+        self.interaction = 2 // interaction = 2 means Dislike interaction
+        var action:String = "SET_INTERACTION"
+        
+        if (!isInteractionBtnClicked(sender)) {
+            
+            action = "UNSET_INTERACTION"
+        }
         
         if isSessionStored() {
-            
-            //Getting User info
-            let userId =  preferences.integer(forKey: "userId")
-            
-            //Getting video info
-            let videoId = self.video.getVideoId()
-            let youtubeVideoId = self.video.getYouTubeId()
-                      
-            let paramToSend = "userId=\(userId)" +
-                              "&videoId=\(videoId)" +
-                              "&videoURL=\(youtubeVideoId)" +
-                              "&interaction=\(self.interaction)" +
-                              "&action=" + action
-            
-            self.http.POST(self.interactionAPI!, paramToSend){ response in
-                
-                guard let session_data = response["success"] as? Int else{
-                              
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
-                    return
-                }
-                
-                if session_data == 0 {
-                    
-                    //TODO: Handle having an invalid email address
-                    self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
-                        return
-                }
-            }
+            doInteraction(action: action, interaction: self.interaction)
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -217,30 +169,56 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func ShareIconPressed(_ sender: UIButton) {
         
+        self.interaction = 3 // interaction = 3 means SHARE interaction
+        
         if isSessionStored() {
             
             let url = "http://www.youtube.com/embed/\(videoArray[0])"
             let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
             present(activityController, animated: true, completion: nil)
+            
+            let action = "SHARE"
+            doInteraction(action: action, interaction: self.interaction)
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
             self.present(self.login, animated: true, completion: nil)
             
-            //TODO: Implement the share API
+            
         }
     }
     
     @IBAction func DownloadIconPressed(_ sender: UIButton) {
         
+        self.interaction = 4 // interaction = 4 means DOWNLOAD interaction
+        
         if isSessionStored() {
             
             let url = "http://www.youtube.com/embed/\(videoArray[0])"
-            http.Download(url)
-            self.alertFunctions.showAlert(self, "Success", msg: "Download Completed")
             
-            //TODO: Implement the download API
+//            guard (isInteractionBtnClicked(sender)) else {
+//
+//                let doAction = UIAlertAction(title: "Yes", style: .default) { (action) -> Void in
+//
+//                    //TODO: Remove video from downloads
+//
+//                }
+//                self.alertFunctions.showActionAlert(self, "Warning", "Are you sure you want to delete this video from downloads?", doAction)
+//                return
+//            }
+            http.Download(url) { response in
+
+                guard (response) else {
+
+                    self.alertFunctions.showAlert(self, "Error", msg: "Could not download video")
+                        return
+                }
+                self.alertFunctions.showAlert(self, "Success", msg: "Download Completed")
+            }
+            
+            let action = "DOWNLOAD"
+            doInteraction(action: action, interaction: self.interaction)
             
         }else {
             
@@ -252,15 +230,54 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func SaveIconPressed(_ sender: UIButton) {
         
+        self.interaction = 5 // interaction = 5 means SAVE interaction
+        
         if isSessionStored() {
-                   
-            //TODO: Implement the Save API
-            print("Supposed to do the Save API request")
+            
+            //TODO: Implement the SAVE functionality
+            let action = "SAVE"
+            doInteraction(action: action, interaction: self.interaction)
+            
         }else {
             
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             self.login = storyBoard.instantiateViewController(withIdentifier: "LoggedInViewController") as! LoggedInViewController
             self.present(self.login, animated: true, completion: nil)
+        }
+    }
+    
+    func doInteraction(action:String, interaction:Int) {
+        
+       
+        
+        //Getting User info
+        let userId =  preferences.integer(forKey: "userId")
+        
+        //Getting video info
+        let videoId = self.video.getVideoId()
+        let youtubeVideoId = self.video.getYouTubeId()
+                                    
+        let paramToSend = "userId=\(userId)" +
+                          "&videoId=\(videoId)" +
+                          "&videoURL=\(youtubeVideoId)" +
+                          "&interaction=\(self.interaction)" +
+                          "&action=\(action)"
+        
+        self.http.POST(self.interactionAPI!, paramToSend){ response in
+            
+            guard let session_data = response["success"] as? Int else{
+                
+//                if (action == "SET_INTERACTION" || action == "UNSET_INTERACTION") {}
+                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                    return
+            }
+            
+            if session_data == 0 {
+                
+                //TODO: Handle having an invalid email address
+                self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
+                    return
+            }
         }
     }
     
@@ -301,20 +318,16 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         return videosArray
     }
     
-    private func isInteractionBtnClicked(_ button:UIButton) -> String {
+    private func isInteractionBtnClicked(_ button:UIButton) -> Bool {
         
-        var action:String
+//        let isBtnClicked:Bool = button.isSelected
         
         if (button.isSelected){
-            
             button.isSelected = false
-            action = "UNSET_INTERACTION"
         } else {
-            
             button.isSelected = true
-            action = "SET_INTERACTION"
         }
-        return action
+        return button.isSelected
     }
 }
 

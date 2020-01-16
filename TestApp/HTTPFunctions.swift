@@ -48,12 +48,13 @@ class HTTPFunctions {
         task.resume()
     }
     
-    func Download(_ url_string:String) {
+    func Download(_ url_string:String, completionBlock: @escaping (Bool) -> Void) {
 
         let sampleURL = "http://localhost:8888/test_db/videos/demo.mov" // Demo video just to test the function
 
         DispatchQueue.global(qos: .background).async {
-           if let url = URL(string: sampleURL), let urlData = NSData(contentsOf: url) {
+          
+            if let url = URL(string: sampleURL), let urlData = NSData(contentsOf: url) {
 
               let galleryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
               let filePath="\(galleryPath)/demo2.mov"
@@ -70,8 +71,10 @@ class HTTPFunctions {
 
                         if success {
                             print("Succesfully Saved")
+                            completionBlock(true)
                     } else {
                             print(error?.localizedDescription as Any)
+                            completionBlock(true)
                             
                         }
                     }
