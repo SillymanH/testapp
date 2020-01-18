@@ -7,8 +7,9 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C2925879-BDF4-441F-937F-EF143C7F4E2A"
-            shouldBeEnabled = "No"
+<<<<<<< Updated upstream
+            uuid = "43E8CC11-AFA9-47D7-8080-2E61AA142A28"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestApp/HTTPFunctions.swift"
@@ -18,52 +19,60 @@
             endingLineNumber = "48"
             landmarkName = "POST(_:_:completionBlock:)"
             landmarkType = "7">
+=======
+            uuid = "30106190-524B-48A4-AE30-5B4796CE0AFD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/RegisterViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B"
+            uuid = "EAE43F4E-8709-4D62-ADC6-25BB1B08AD6F"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestApp/HTTPFunctions.swift"
+            filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "POST(_:_:completionBlock:)"
-            landmarkType = "7">
+            startingLineNumber = "64"
+            endingLineNumber = "64">
             <Locations>
                <Location
-                  uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B - 827de87286642528"
+                  uuid = "EAE43F4E-8709-4D62-ADC6-25BB1B08AD6F - 79b3f8611c16ab05"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "TestApp.HTTPFunctions.POST(_: Foundation.URL, _: Swift.String, completionBlock: (__C.NSDictionary) -&gt; ()) -&gt; ()"
+                  symbolName = "TestApp.RegisterViewController.DoRegister(Swift.String, Swift.String, Swift.String, Swift.String, Swift.String) -&gt; ()"
                   moduleName = "TestApp"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/HTTPFunctions.swift"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/RegisterViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "22"
-                  endingLineNumber = "22"
-                  offsetFromSymbolStart = "1135">
+                  startingLineNumber = "65"
+                  endingLineNumber = "65"
+                  offsetFromSymbolStart = "2133">
                </Location>
                <Location
-                  uuid = "A191EFC6-B0EA-4D47-A43F-205A23D85F4B - 1cf06432793bd72a"
+                  uuid = "EAE43F4E-8709-4D62-ADC6-25BB1B08AD6F - 83ab3ff5b9bafdd1"
                   shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestApp.HTTPFunctions.POST(_: Foundation.URL, _: Swift.String, completionBlock: (__C.NSDictionary) -&gt; ()) -&gt; ()"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in TestApp.RegisterViewController.DoRegister(Swift.String, Swift.String, Swift.String, Swift.String, Swift.String) -&gt; ()"
                   moduleName = "TestApp"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/HTTPFunctions.swift"
+                  urlString = "file:///Users/sleimanhasan/Documents/TestApp/TestApp/RegisterViewController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "25"
-                  endingLineNumber = "25"
-                  offsetFromSymbolStart = "270">
+                  startingLineNumber = "68"
+                  endingLineNumber = "68"
+                  offsetFromSymbolStart = "294">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -71,81 +80,72 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B28A16B1-FD8A-4474-B4B9-D3CA89A813D6"
+            uuid = "1268251A-527A-4616-AA71-9A4A91BF4B2B"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestApp/ViewController.swift"
+            filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "LikeIconPressed(_:)"
-            landmarkType = "7">
+            startingLineNumber = "67"
+            endingLineNumber = "67">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8862B8C8-A5DD-465E-945B-B14551EA21CC"
+            uuid = "FEB085BD-082C-419B-9E04-6D5EF1FF1382"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestApp/ViewController.swift"
+            filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "LikeIconPressed(_:)"
-            landmarkType = "7">
+            startingLineNumber = "74"
+            endingLineNumber = "74">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D8D573AB-47BE-4239-AB2F-3C82584F6015"
+            uuid = "9D0A54AB-94B2-4392-88FC-641359F84DDD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestApp/ViewController.swift"
+            filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
-            landmarkName = "DislikeIconPressed(_:)"
-            landmarkType = "7">
+            startingLineNumber = "90"
+            endingLineNumber = "90">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1E7048AE-C87B-4CBD-BDDA-7D69CB735E25"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TestApp/HTTPFunctions.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "Download(_:completionBlock:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0794C553-F1E3-4C84-AE2D-36B549C28BC9"
+            uuid = "F535FDBE-D21E-4D70-B443-1EF162EDD180"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TestApp/ViewController.swift"
+            filePath = "TestApp/RegisterViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
-            landmarkName = "LikeIconPressed(_:)"
-            landmarkType = "7">
+            startingLineNumber = "86"
+            endingLineNumber = "86">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53D96EF0-3115-491D-891E-F6E7016ADCB5"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestApp/RegisterViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80">
+>>>>>>> Stashed changes
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
