@@ -40,13 +40,12 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        reloadVideoView()
+        self.videoArray = getRandomVideos(6)
+        reloadVideoView(youtubeVideoId: videoArray[0])
         reloadVideoTable()
     }
 
-    func reloadVideoView() {
-        
-        self.videoArray = getRandomVideos(6)
+    func reloadVideoView(youtubeVideoId:String) {
     
         let youtubeVideoId = self.videoArray[0]
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
@@ -115,8 +114,14 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
-        cell.suggestedVideosLabel.text = videoArray[indexPath.row]
+        cell.suggestedVideosLabel?.text = videoArray[indexPath.row]
             return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let youtubeId = videoArray[indexPath.row]
+        reloadVideoView(youtubeVideoId: youtubeId)
     }
     
     func isSessionStored() -> Bool {
