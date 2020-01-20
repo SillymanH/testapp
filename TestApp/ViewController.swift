@@ -17,6 +17,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var dislikeBtn: UIButton!
     @IBOutlet weak var saveBtn: UIButton!
+    @IBOutlet weak var videoTitleLabel: UILabel!
     
     //APIs
     let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
@@ -91,6 +92,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 self.youTubeWebView.navigationDelegate = self
                 self.youTubeWebView.configuration.allowsInlineMediaPlayback = false
                 self.youtube.loadYoutubeIframe(youtubeVideoId, self.youTubeWebView) //Loading video on the video view using youtube id
+                self.videoTitleLabel?.text = self.video.getVideoTitle()
             }
         }
 

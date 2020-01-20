@@ -165,6 +165,7 @@
                         <outlet property="likeBtn" destination="s0l-Dd-oiu" id="JWl-Ad-rvE"/>
                         <outlet property="saveBtn" destination="FzP-BL-a8v" id="3UT-5S-jvk"/>
                         <outlet property="suggestedVideosTable" destination="FFt-Gj-q6G" id="6ar-eU-MgG"/>
+                        <outlet property="videoTitleLabel" destination="334-i5-nxX" id="OgV-wX-EhL"/>
                         <outlet property="youTubeWebView" destination="8cf-0A-bGi" id="rN2-kM-Rve"/>
                     </connections>
                 </viewController>
