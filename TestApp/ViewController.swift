@@ -113,10 +113,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+        let videoTitle = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "video_title")
         
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
-        cell.suggestedVideosLabel?.text = youtubeIds[indexPath.row]
+        cell.suggestedVideosLabel?.text = videoTitle[indexPath.row]
         
         let imageUrl = URL(string: "http://localhost:8888/test_db/thumbnails/planet.jpg")
         let imageData = http.downloadImage(from: imageUrl!)
