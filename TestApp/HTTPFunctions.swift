@@ -20,6 +20,10 @@ class HTTPFunctions {
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = params.data(using: String.Encoding.utf8)
         
+        let group = DispatchGroup()
+        group.enter()
+
+        
         let task = session.dataTask(with: request as URLRequest, completionHandler: {
         (data, response, error) in
 
@@ -44,8 +48,24 @@ class HTTPFunctions {
 
             print(server_response)
             completionBlock(server_response)
+            group.leave()
         })
         task.resume()
+        group.wait()
+    }
+    
+   func imageRequest(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+    
+    let session = URLSession.shared
+    let request = NSMutableURLRequest(url: url)
+    request.httpMethod = "GET"
+  
+    let task = session.dataTask(with: request as URLRequest) {
+        data, response, error in
+    
+        return completion(data, response, error)
+    }
+    task.resume()
     }
     
     func Download(_ url_string:String, completionBlock: @escaping (Bool) -> Void) {
@@ -82,4 +102,26 @@ class HTTPFunctions {
               }
            }
         }
+    
+    func downloadImage(from url: URL) -> Data {
+        print("Download Started")
+        
+        var imageData:Data = Data()
+        
+        let group = DispatchGroup()
+        group.enter()
+        
+        self.imageRequest(from: url) { data, response, error in
+        
+            guard let data = data, error == nil else { return }
+            
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+                
+            imageData = data
+            
+            group.leave()
+        }
+        group.wait()
+        return imageData
+    }
 }

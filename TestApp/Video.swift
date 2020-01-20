@@ -20,6 +20,7 @@ class Video {
     private var videoSaves:Int = 0
     private var videoTitle:String = ""
     private var youtubeVideoId:String = ""
+    private var suggestedVideoData: [NSDictionary] = []
     
     init() {}
     
@@ -39,22 +40,22 @@ class Video {
         self.videoLikes = videoLikes
        }
 
-       public func setVideoDislikes(_ videoDislikes:Int) {
+    public func setVideoDislikes(_ videoDislikes:Int) {
 
         self.videoDislikes = videoDislikes
        }
 
-       public func setVideoShares(_ videoShares:Int) {
+    public func setVideoShares(_ videoShares:Int) {
 
         self.videoShares = videoShares
        }
 
-       public func setVideoDownloads(_ videoDownloads:Int) {
+    public func setVideoDownloads(_ videoDownloads:Int) {
 
         self.videoDownloads = videoDownloads
        }
 
-       public func setVideoSaves(_ videoSaves:Int) {
+    public func setVideoSaves(_ videoSaves:Int) {
 
         self.videoSaves = videoSaves
        }
@@ -64,55 +65,75 @@ class Video {
         self.videoTitle = videoTitle
        }
 
-       public func setYoutubeId(_ youtubeVideoId:String) {
+    public func setYoutubeId(_ youtubeVideoId:String) {
 
         self.youtubeVideoId = youtubeVideoId
        }
+    
+    public func setSuggestedVideos(_ videoArray:[NSDictionary]) {
+        
+        self.suggestedVideoData = videoArray
+    }
 
-       //Getters
-       public func getVideoId() -> Int{
+    //Getters
+    public func getVideoId() -> Int{
 
         return self.videoId
-       }
+    }
 
-       public func getChannelId() -> Int {
+    public func getChannelId() -> Int {
 
-        return self.channelId
-       }
+    return self.channelId
+    }
 
-       public func getVideoLikes() -> Int {
+    public func getVideoLikes() -> Int {
 
-        return self.videoLikes
-       }
+    return self.videoLikes
+    }
 
-       public func getVideoDislikes() -> Int {
+    public func getVideoDislikes() -> Int {
 
-           return self.videoDislikes
-       }
+        return self.videoDislikes
+    }
 
-       public func getVideoShares() -> Int {
+    public func getVideoShares() -> Int {
 
-           return self.videoShares
-       }
+        return self.videoShares
+    }
 
-       public func getVideoDownloads() -> Int {
+    public func getVideoDownloads() -> Int {
 
-           return self.videoDownloads
-       }
+        return self.videoDownloads
+    }
 
-       public func getVideoSaves() -> Int {
+    public func getVideoSaves() -> Int {
 
-          return self.videoSaves
-       }
+        return self.videoSaves
+    }
 
-       public func getVideoTitle() -> String {
+    public func getVideoTitle() -> String {
 
            return self.videoTitle
        }
 
-       public func getYouTubeId() -> String {
+    public func getYouTubeId() -> String {
 
           return self.youtubeVideoId
        }
+    
+    public func getSuggestedVideos() -> [NSDictionary] {
+        
+        return self.suggestedVideoData
+    }
+    
+    public func getSpecificVideoData(_ suggestedVideos:[NSDictionary], attribut:String) -> [String] {
+        
+        var requestedData:[String] = []
+        
+        for video in suggestedVideos {
+            requestedData.append(video[attribut] as! String)
+        }
+        return requestedData
+    }
     
 }

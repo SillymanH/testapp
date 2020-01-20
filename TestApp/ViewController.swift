@@ -20,7 +20,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     //APIs
     let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
-    let randomVideosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
     let videosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
     
     //Global Instances
@@ -31,7 +30,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     var login:LoggedInViewController = LoggedInViewController()
     
     //Global Variables
-    var videoArray:Array<String> = []
+    var suggestedVideos: [NSDictionary] = []
     let preferences = UserDefaults.standard
     var interaction:Int = 0
     
@@ -40,14 +39,15 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        self.videoArray = getRandomVideos(6)
-        reloadVideoView(youtubeVideoId: videoArray[0])
+        self.suggestedVideos = getVideos(6)
+        let firstIndexedVideo = suggestedVideos[0]
+        let youtubeId = firstIndexedVideo["youtube_video_id"]
+        reloadVideoView(youtubeVideoId: youtubeId as! String)
         reloadVideoTable()
     }
 
     func reloadVideoView(youtubeVideoId:String) {
     
-        let youtubeVideoId = self.videoArray[0]
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
         self.http.POST(self.videosAPI!, paramToSend) { response in
             
@@ -108,20 +108,27 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return videoArray.count
+        return self.suggestedVideos.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+        let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
         
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
-        cell.suggestedVideosLabel?.text = videoArray[indexPath.row]
-            return cell
+        cell.suggestedVideosLabel?.text = youtubeIds[indexPath.row]
+        
+        let imageUrl = URL(string: "http://localhost:8888/test_db/thumbnails/planet.jpg")
+        let imageData = http.downloadImage(from: imageUrl!)
+        
+        cell.suggestedVideoImage?.image = UIImage(data: imageData)  
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let youtubeId = videoArray[indexPath.row]
-        reloadVideoView(youtubeVideoId: youtubeId)
+
+        let youtubeIds = video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+        reloadVideoView(youtubeVideoId: youtubeIds[indexPath.row])
     }
     
     func isSessionStored() -> Bool {
@@ -178,7 +185,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            let url = "http://www.youtube.com/embed/\(videoArray[0])"
+            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+            let url = "http://www.youtube.com/embed/\(youtubeIds[0])"
             let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
             present(activityController, animated: true, completion: nil)
             
@@ -200,7 +208,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            let url = "http://www.youtube.com/embed/\(videoArray[0])"
+            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+            let url = "http://www.youtube.com/embed/\(youtubeIds[0])"
             
 //            guard (isInteractionBtnClicked(sender)) else {
 //
@@ -286,13 +295,13 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }
     }
     
-    func getRandomVideos(_ numberOfVideos:Int) -> Array<String> {
+    func getVideos(_ numberOfVideos:Int) -> [NSDictionary] {
         
-        var videosArray:Array<String> = []
+        var videosData:[NSDictionary] = []
         
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
         
-        self.http.POST(self.randomVideosAPI!, paramToSend) { response in
+        self.http.POST(self.videosAPI!, paramToSend) { response in
     
             guard let session_data = response["success"] as? Int else{
                 
@@ -306,26 +315,17 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                     return
             }
             
-            if let videos = response["info"] as? [[String : Any]] {
+            if let videos = response["info"] as? [Any] {
                 
                 for video in videos {
-                    
-                    for (key, value) in video {
-            
-                        if (key == "youtube_video_id") {
-                            videosArray.append(value as! String)
-                        }
-                    }
+                    videosData.append(video as! NSDictionary)
                 }
-            }
+             }
         }
-        sleep(1)
-        return videosArray
+        return videosData
     }
     
     private func isInteractionBtnClicked(_ button:UIButton) -> Bool {
-        
-//        let isBtnClicked:Bool = button.isSelected
         
         if (button.isSelected){
             button.isSelected = false

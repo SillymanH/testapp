@@ -11,6 +11,9 @@ import UIKit
 class SuggestedVideosCell: UITableViewCell {
 
     @IBOutlet weak var suggestedVideosLabel: UILabel!
+    @IBOutlet weak var suggestedVideoImage: UIImageView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
