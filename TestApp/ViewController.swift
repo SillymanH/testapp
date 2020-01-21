@@ -95,9 +95,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             
             DispatchQueue.main.async {
                 
-                self.youTubeWebView.navigationDelegate = self
-                self.youTubeWebView.configuration.allowsInlineMediaPlayback = false
-                self.youtube.loadYoutubeIframe(youtubeVideoId, self.youTubeWebView) //Loading video on the video view using youtube id
+                self.youtube.prepYoutubeView(youtubeVideoId, self.youTubeWebView, classInstance: self)
                 self.videoTitleLabel?.text = "\(self.video.getVideoTitle())"
                 
                 let likes = self.video.getVideoLikes()
@@ -164,23 +162,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         DispatchQueue.main.async {
             
-            cell.suggestedVideoWebView.navigationDelegate = self
-            cell.suggestedVideoWebView.configuration.allowsInlineMediaPlayback = false
-            self.youtube.loadYoutubeIframe(youtubeIds[indexPath.row], cell.suggestedVideoWebView) //Loading video on the video view using youtube id
-//            self.videoTitleLabel?.text = "\(self.video.getVideoTitle())"
+            self.youtube.prepYoutubeView(youtubeIds[indexPath.row], cell.suggestedVideoWebView,
+                                         classInstance: self)
         }
-        
-        
-        
-        
-        
-        
-//        let imageStr = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "thumbnail")
-//        let url = imageStr[indexPath.row]
-//        let imageURL = URL(string: url)
-//        let imageData = http.downloadImage(from: imageURL!)
-        
-//        cell.suggestedVideoImage?.image = UIImage(data: imageData)
         return cell
     }
     
