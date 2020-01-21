@@ -7,10 +7,14 @@
 //
 
 import UIKit
+import WebKit
 
 class SuggestedVideosCell: UITableViewCell {
 
     @IBOutlet weak var suggestedVideosLabel: UILabel!
+//    @IBOutlet weak var suggestedVideoImage: UIImageView!
+    @IBOutlet weak var suggestedVideoWebView: WKWebView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
