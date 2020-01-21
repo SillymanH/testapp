@@ -21,7 +21,7 @@ class HTTPFunctions {
         request.httpBody = params.data(using: String.Encoding.utf8)
         
         let group = DispatchGroup()
-        group.enter()
+        group.enter() // Entering the code block which will get executed
 
         
         let task = session.dataTask(with: request as URLRequest, completionHandler: {
@@ -48,10 +48,10 @@ class HTTPFunctions {
 
             print(server_response)
             completionBlock(server_response)
-            group.leave()
+            group.leave() // Leaving the code block
         })
         task.resume()
-        group.wait()
+        group.wait() // Thread waits for the code block to finish
     }
     
    func imageRequest(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -104,12 +104,12 @@ class HTTPFunctions {
         }
     
     func downloadImage(from url: URL) -> Data {
-        print("Download Started")
+        print(url)
         
         var imageData:Data = Data()
         
         let group = DispatchGroup()
-        group.enter()
+        group.enter() // Entering the code block which will get executed
         
         self.imageRequest(from: url) { data, response, error in
         
@@ -119,9 +119,9 @@ class HTTPFunctions {
                 
             imageData = data
             
-            group.leave()
+            group.leave() // Leaving the code block
         }
-        group.wait()
+        group.wait() // Thread waits for the code block to finish
         return imageData
     }
 }

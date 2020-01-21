@@ -18,6 +18,12 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @IBOutlet weak var dislikeBtn: UIButton!
     @IBOutlet weak var saveBtn: UIButton!
     @IBOutlet weak var videoTitleLabel: UILabel!
+    @IBOutlet weak var numberOfLikesLabel: UILabel!
+    @IBOutlet weak var numberOfDislikesLabel: UILabel!
+    @IBOutlet weak var NumberofSharesLabel: UILabel!
+    @IBOutlet weak var numberOfDownloadsLabel: UILabel!
+    @IBOutlet weak var numberOfSavesLabel: UILabel!
+    
     
     //APIs
     let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
@@ -40,7 +46,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 
-        self.suggestedVideos = getVideos(6)
+        self.suggestedVideos = getVideos(10)
         let firstIndexedVideo = suggestedVideos[0]
         let youtubeId = firstIndexedVideo["youtube_video_id"]
         reloadVideoView(youtubeVideoId: youtubeId as! String)
@@ -92,10 +98,44 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 self.youTubeWebView.navigationDelegate = self
                 self.youTubeWebView.configuration.allowsInlineMediaPlayback = false
                 self.youtube.loadYoutubeIframe(youtubeVideoId, self.youTubeWebView) //Loading video on the video view using youtube id
-                self.videoTitleLabel?.text = self.video.getVideoTitle()
+                self.videoTitleLabel?.text = "\(self.video.getVideoTitle())"
+                
+                let likes = self.video.getVideoLikes()
+                let dislikes = self.video.getVideoDislikes()
+                let shares = self.video.getVideoShares()
+                let downloads = self.video.getVideoDownloads()
+                let saves = self.video.getVideoSaves()
+                self.numberOfLikesLabel?.text = self.statCheck(likes)
+                self.numberOfDislikesLabel?.text = self.statCheck(dislikes)
+                self.NumberofSharesLabel?.text = self.statCheck(shares)
+                self.numberOfDownloadsLabel?.text = self.statCheck(downloads)
+                self.numberOfSavesLabel?.text = self.statCheck(saves)
+                
             }
         }
 
+    }
+    
+    func statCheck(_ statNumber:Int) -> String {
+        
+        var statStr:String = "\(statNumber)"
+        
+        if statNumber >= 1000 && statNumber < 1000000 {
+            
+           statStr = "\(statNumber / 1000)K"
+        }
+        
+        if statNumber >= 1000000 && statNumber < 1000000000 {
+            
+           statStr = "\(statNumber / 1000000)M"
+        }
+        
+        if statNumber >= 1000000000 && statNumber < 1000000000000 {
+            
+           statStr = "\(statNumber / 10000000)T"
+        }
+        
+        return statStr
     }
     
     func reloadVideoTable(){
@@ -120,8 +160,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel?.text = videoTitle[indexPath.row]
         
-        let imageUrl = URL(string: "http://localhost:8888/test_db/thumbnails/planet.jpg")
-        let imageData = http.downloadImage(from: imageUrl!)
+        let imageStr = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "thumbnail")
+        let url = imageStr[indexPath.row]
+        let imageURL = URL(string: url)
+        let imageData = http.downloadImage(from: imageURL!)
         
         cell.suggestedVideoImage?.image = UIImage(data: imageData)  
         return cell
@@ -283,7 +325,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             
             guard let session_data = response["success"] as? Int else{
                 
-//                if (action == "SET_INTERACTION" || action == "UNSET_INTERACTION") {}
+//                if (action == "SET_INTERACTION" || action == "UNSET_INTERACTION")
                 self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
