@@ -160,12 +160,27 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel?.text = videoTitle[indexPath.row]
         
-        let imageStr = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "thumbnail")
-        let url = imageStr[indexPath.row]
-        let imageURL = URL(string: url)
-        let imageData = http.downloadImage(from: imageURL!)
+        let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
         
-        cell.suggestedVideoImage?.image = UIImage(data: imageData)  
+        DispatchQueue.main.async {
+            
+            cell.suggestedVideoWebView.navigationDelegate = self
+            cell.suggestedVideoWebView.configuration.allowsInlineMediaPlayback = false
+            self.youtube.loadYoutubeIframe(youtubeIds[indexPath.row], cell.suggestedVideoWebView) //Loading video on the video view using youtube id
+//            self.videoTitleLabel?.text = "\(self.video.getVideoTitle())"
+        }
+        
+        
+        
+        
+        
+        
+//        let imageStr = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "thumbnail")
+//        let url = imageStr[indexPath.row]
+//        let imageURL = URL(string: url)
+//        let imageData = http.downloadImage(from: imageURL!)
+        
+//        cell.suggestedVideoImage?.image = UIImage(data: imageData)
         return cell
     }
     
