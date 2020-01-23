@@ -11,15 +11,27 @@ import Photos
 
 class HTTPFunctions {
     
-    func POST(_ requestURL:URL,_ params:String, completionBlock: @escaping (NSDictionary) -> Void) {
+    func doRequest(_ string_url:String,_ params:String,_ httpMethod:String, completionBlock: @escaping (NSDictionary) -> Void) {
         
+        var url = string_url
+        
+        if httpMethod == "GET" {
+            
+            url = string_url + "?\(params)"
+        }
+        
+        let requestURL = URL(string: url)
         let session = URLSession.shared
         
-        let request = NSMutableURLRequest(url: requestURL)
-        request.httpMethod = "POST"
+        let request = NSMutableURLRequest(url: requestURL!)
+        request.httpMethod = httpMethod
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.httpBody = params.data(using: String.Encoding.utf8)
         
+        if httpMethod == "POST" {
+            
+           request.httpBody = params.data(using: String.Encoding.utf8)
+        }
+
         let group = DispatchGroup()
         group.enter() // Entering the code block which will get executed
 

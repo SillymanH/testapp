@@ -20,11 +20,11 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var _checkbox: UIButton!
 
     //APIs
-    let url = URL(string: "http://localhost:8888/test_db/index.php/")
+    let registerURL = "http://localhost:8888/test_db/index.php/"
     
     //Global Instances
     let alertFunctions: AlertFunctions = AlertFunctions()
-    let sendRequest:HTTPFunctions = HTTPFunctions()
+    let http:HTTPFunctions = HTTPFunctions()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +64,9 @@ class RegisterViewController: UIViewController {
                           "&fullname=\(full_name)" +
                           "&mobileNumber=\(mobile_number)"
         
-        self.sendRequest.POST(url!, paramToSend) { response in
+        let httpMethod = "POST"
+        
+        self.http.doRequest(self.registerURL, paramToSend, httpMethod) { response in
             
             guard let session_data = response["success"] as? Int else{
                 

@@ -26,8 +26,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     
     //APIs
-    let interactionAPI = URL(string: "http://localhost:8888/test_db/Interactions.php/")
-    let videosAPI = URL(string: "http://localhost:8888/test_db/Videos.php/")
+    let interactionAPI = "http://localhost:8888/test_db/Interactions.php/"
+    let videosAPI = "http://localhost:8888/test_db/Videos.php/"
     
     //Global Instances
     let youtube:YoutubeFunctions = YoutubeFunctions()
@@ -56,7 +56,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     func reloadVideoView(youtubeVideoId:String) {
     
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
-        self.http.POST(self.videosAPI!, paramToSend) { response in
+        let httpMethod = "POST"
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { response in
             
             guard let session_data = response["success"] as? Int else {
             
@@ -103,37 +104,15 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                 let shares = self.video.getVideoShares()
                 let downloads = self.video.getVideoDownloads()
                 let saves = self.video.getVideoSaves()
-                self.numberOfLikesLabel?.text = self.statCheck(likes)
-                self.numberOfDislikesLabel?.text = self.statCheck(dislikes)
-                self.NumberofSharesLabel?.text = self.statCheck(shares)
-                self.numberOfDownloadsLabel?.text = self.statCheck(downloads)
-                self.numberOfSavesLabel?.text = self.statCheck(saves)
+                self.numberOfLikesLabel?.text = self.youtube.statCheck(likes)
+                self.numberOfDislikesLabel?.text = self.youtube.statCheck(dislikes)
+                self.NumberofSharesLabel?.text = self.youtube.statCheck(shares)
+                self.numberOfDownloadsLabel?.text = self.youtube.statCheck(downloads)
+                self.numberOfSavesLabel?.text = self.youtube.statCheck(saves)
                 
             }
         }
 
-    }
-    
-    func statCheck(_ statNumber:Int) -> String {
-        
-        var statStr:String = "\(statNumber)"
-        
-        if statNumber >= 1000 && statNumber < 1000000 {
-            
-           statStr = "\(statNumber / 1000)K"
-        }
-        
-        if statNumber >= 1000000 && statNumber < 1000000000 {
-            
-           statStr = "\(statNumber / 1000000)M"
-        }
-        
-        if statNumber >= 1000000000 && statNumber < 1000000000000 {
-            
-           statStr = "\(statNumber / 10000000)T"
-        }
-        
-        return statStr
     }
     
     func reloadVideoTable(){
@@ -319,8 +298,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                           "&videoURL=\(youtubeVideoId)" +
                           "&interaction=\(self.interaction)" +
                           "&action=\(action)"
+        let httpMethod = "POST"
         
-        self.http.POST(self.interactionAPI!, paramToSend){ response in
+        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod){ response in
             
             guard let session_data = response["success"] as? Int else{
                 
@@ -343,8 +323,9 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         var videosData:[NSDictionary] = []
         
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
+        let httpMethod = "POST"
         
-        self.http.POST(self.videosAPI!, paramToSend) { response in
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { response in
     
             guard let session_data = response["success"] as? Int else{
                 
@@ -377,5 +358,25 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }
         return button.isSelected
     }
+    
+    
+    @IBAction func ChannelProfilePressed(_ sender: UIButton) {
+        
+//        let vc = ChannelViewController(nibName: "SecondaryViewController", bundle: nil)
+//        vc.text = "Next level blog photo booth, tousled authentic tote bag kogi"
+//
+//        navigationController?.pushViewController(vc, animated: true)
+        
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let channelVC = storyBoard.instantiateViewController(withIdentifier: "channel_info") as! ChannelViewController
+        channelVC.video = self.video
+        self.present(channelVC, animated:true)
+    }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        let vc = segue.destination as! ChannelViewController
+//        vc.getChannelInfo(video) // This is to pass the video instance to ChannelViewController thru segue
+//    }
 }
 

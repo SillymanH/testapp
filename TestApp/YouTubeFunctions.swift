@@ -101,4 +101,26 @@ class YoutubeFunctions {
         webView.configuration.allowsInlineMediaPlayback = false
         loadYoutubeIframe(youtubeVideoId, webView) //Loading video on the video view using youtube id
     }
+    
+    public func statCheck(_ statNumber:Int) -> String {
+        
+        var statStr:String = "\(statNumber)"
+        
+        if statNumber >= 1000 && statNumber < 1000000 {
+            
+           statStr = "\(statNumber / 1000)K"
+        }
+        
+        if statNumber >= 1000000 && statNumber < 1000000000 {
+            
+           statStr = "\(statNumber / 1000000)M"
+        }
+        
+        if statNumber >= 1000000000 && statNumber < 1000000000000 {
+            
+           statStr = "\(statNumber / 10000000)T"
+        }
+        
+        return statStr
+    }
 }

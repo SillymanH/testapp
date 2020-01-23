@@ -17,7 +17,7 @@ class LoggedInViewController: UIViewController {
     @IBOutlet weak var _login_button: UIButton!
 
     // APIs
-    let url = URL(string: "http://localhost:8888/test_db/index.php/")
+    let loginURL = "http://localhost:8888/test_db/index.php/"
     
     //Global Instances
     let alertFunctions: AlertFunctions = AlertFunctions()
@@ -69,9 +69,10 @@ class LoggedInViewController: UIViewController {
         
         let paramToSend = "username=\(user)" +
                           "&password=\(psw)"
+        let httpMethod = "POST"
         
         
-        self.httpRequest.POST(self.url!, paramToSend) { Response in
+        self.httpRequest.doRequest(self.loginURL, paramToSend, httpMethod) { Response in   
             
             guard let session_data = Response["success"] as? Int else{
                 
