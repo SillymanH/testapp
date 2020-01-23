@@ -12,8 +12,8 @@ import WebKit
 class SuggestedVideosCell: UITableViewCell {
 
     @IBOutlet weak var suggestedVideosLabel: UILabel!
-//    @IBOutlet weak var suggestedVideoImage: UIImageView!
     @IBOutlet weak var suggestedVideoWebView: WKWebView!
+    @IBOutlet weak var allVideosWebView: WKWebView! // This is for the channelInfo view controller
     
     override func awakeFromNib() {
         super.awakeFromNib()
