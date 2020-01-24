@@ -133,12 +133,12 @@
 				18D5FAB423D86A4500ED372E /* Channel.swift */,
 				1817382D23C296CA004556C8 /* Person.swift */,
 				18DF4FB123C682410062CFBD /* Video.swift */,
+				18D5FAB923D9103A00ED372E /* ImagePicker.swift */,
 				18EB28D923B8CDAA00A8A037 /* AlertFunctions.swift */,
+				18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */,
 				18EB289723AF730A00A8A037 /* Assets.xcassets */,
 				18EB289923AF730A00A8A037 /* LaunchScreen.storyboard */,
 				18EB289C23AF730A00A8A037 /* Info.plist */,
-				18EB28C423B0129C00A8A037 /* SuggestedVideosCell.swift */,
-				18D5FAB923D9103A00ED372E /* ImagePicker.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";

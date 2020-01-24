@@ -40,16 +40,24 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     var suggestedVideos: [NSDictionary] = []
     let preferences = UserDefaults.standard
     var interaction:Int = 0
+    var videoToDisplayId:String = ""
+    var youtubeIds:[String] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        
         self.suggestedVideos = getVideos(10)
-        let firstIndexedVideo = suggestedVideos[0]
-        let youtubeId = firstIndexedVideo["youtube_video_id"]
-        reloadVideoView(youtubeVideoId: youtubeId as! String)
+        
+        if videoToDisplayId.isEmpty {
+            
+            
+            let firstIndexedVideo = suggestedVideos[0] // This gets the data of the 1st video
+            self.videoToDisplayId = firstIndexedVideo["youtube_video_id"] as! String // This gets the youtubeid of the 1st video
+        }
+        
+        reloadVideoView(youtubeVideoId: self.videoToDisplayId)
         reloadVideoTable()
     }
 
@@ -96,7 +104,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
             
             DispatchQueue.main.async {
                 
-                self.youtube.prepYoutubeView(youtubeVideoId, self.youTubeWebView, classInstance: self)
+                self.youtube.prepYoutubeView(youtubeVideoId, self.youTubeWebView, self)
                 self.videoTitleLabel?.text = "\(self.video.getVideoTitle())"
                 
                 let likes = self.video.getVideoLikes()
@@ -137,19 +145,18 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let cell : SuggestedVideosCell = tableView.dequeueReusableCell(withIdentifier: "suggested_videos_cell") as! SuggestedVideosCell
         cell.suggestedVideosLabel?.text = videoTitle[indexPath.row]
         
-        let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+        self.youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
         
         DispatchQueue.main.async {
             
-            self.youtube.prepYoutubeView(youtubeIds[indexPath.row], cell.suggestedVideoWebView,
-                                         classInstance: self)
+            self.youtube.prepYoutubeView(self.youtubeIds[indexPath.row], cell.suggestedVideoWebView,
+                                         self)
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        let youtubeIds = video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+        
         reloadVideoView(youtubeVideoId: youtubeIds[indexPath.row])
     }
     
@@ -172,6 +179,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         }
            
         if isSessionStored() {
+            
             doInteraction(action: action, interaction: self.interaction)
         }else {
             
@@ -207,8 +215,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
-            let url = "http://www.youtube.com/embed/\(youtubeIds[0])"
+//            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+            let url = "http://www.youtube.com/embed/\(self.youtubeIds[0])"
             let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
             present(activityController, animated: true, completion: nil)
             
@@ -230,8 +238,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
-            let url = "http://www.youtube.com/embed/\(youtubeIds[0])"
+//            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
+            let url = "http://www.youtube.com/embed/\(self.youtubeIds[0])"
             
 //            guard (isInteractionBtnClicked(sender)) else {
 //
@@ -283,8 +291,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     }
     
     func doInteraction(action:String, interaction:Int) {
-        
-       
         
         //Getting User info
         let userId =  preferences.integer(forKey: "userId")
@@ -362,21 +368,22 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     @IBAction func ChannelProfilePressed(_ sender: UIButton) {
         
-//        let vc = ChannelViewController(nibName: "SecondaryViewController", bundle: nil)
-//        vc.text = "Next level blog photo booth, tousled authentic tote bag kogi"
-//
-//        navigationController?.pushViewController(vc, animated: true)
-        
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let channelVC = storyBoard.instantiateViewController(withIdentifier: "channel_info") as! ChannelViewController
+        channelVC.delegate = self // The only whay to pass data back from ChannelViewController is thru a protocal delegate
         channelVC.video = self.video
-        self.present(channelVC, animated:true)
+        self.present(UINavigationController(rootViewController: channelVC), animated:true)
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//        let vc = segue.destination as! ChannelViewController
-//        vc.getChannelInfo(video) // This is to pass the video instance to ChannelViewController thru segue
-//    }
 }
 
+extension ViewController: passVideoToDisplayDelegate {
+    
+    func passYouTubeId(id:String){
+        
+        self.dismiss(animated: true) {
+            
+            self.videoToDisplayId = id
+            self.reloadVideoView(youtubeVideoId: id)
+        }
+    }
+}

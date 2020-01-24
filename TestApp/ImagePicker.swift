@@ -80,6 +80,13 @@ extension ImagePicker: UIImagePickerControllerDelegate {
             return self.pickerController(picker, didSelect: nil)
         }
         self.pickerController(picker, didSelect: image)
+        
+        DispatchQueue.global().async {
+            let http:HTTPFunctions = HTTPFunctions()
+            http.UploadImage(Myimage: image)
+        }
+        
+        
     }
 }
 

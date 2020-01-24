@@ -95,9 +95,9 @@ class YoutubeFunctions {
         youTubeWebView.loadHTMLString(html, baseURL: nil)
     }
     
-    func prepYoutubeView(_ youtubeVideoId:String,_ webView: WKWebView, classInstance:AnyObject ) {
+    func prepYoutubeView(_ youtubeVideoId:String,_ webView: WKWebView, _ classInstance:UIViewController ) {
         
-        webView.navigationDelegate = self as? WKNavigationDelegate
+        webView.navigationDelegate = classInstance as? WKNavigationDelegate
         webView.configuration.allowsInlineMediaPlayback = false
         loadYoutubeIframe(youtubeVideoId, webView) //Loading video on the video view using youtube id
     }

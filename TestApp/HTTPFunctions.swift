@@ -8,6 +8,7 @@
 
 import Foundation
 import Photos
+import UIKit
 
 class HTTPFunctions {
     
@@ -135,5 +136,95 @@ class HTTPFunctions {
         }
         group.wait() // Thread waits for the code block to finish
         return imageData
+    }
+    
+    func UploadImage(Myimage:UIImage) {
+
+        let myUrl = NSURL(string: "http://localhost:8888/test_db/uploads/Upload.php");
+
+        let request = NSMutableURLRequest(url:myUrl! as URL);
+        request.httpMethod = "POST";
+
+        let param = [
+            "firstName"  : "Sergey",
+            "lastName"   : "Kargopolov",
+            "userId"     : "9"
+        ]
+
+        let boundary =  generateBoundaryString()
+
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+
+        let imageData = Myimage.jpegData(compressionQuality: 1)
+
+        if(imageData==nil)  { return; }
+
+        request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
+
+        let task = URLSession.shared.dataTask(with: request as URLRequest) {
+            data, response, error in
+
+            if error != nil {
+                print(error as Any)
+                return
+            }
+
+            // You can print out response object
+            print(response as Any)
+
+            // Print out reponse body
+            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            print("****** response data = \(responseString!)")
+
+            do {
+                let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
+
+                print(json as Any)
+
+            }catch
+            {
+                print(error)
+            }
+
+        }
+
+        task.resume()
+    }
+
+    func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
+        let body = NSMutableData();
+
+        if parameters != nil {
+                for (key, value) in parameters! {
+                    body.appendString("--\(boundary)\r\n")
+                    body.appendString("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                    body.appendString("\(value)\r\n")
+                }
+            }
+        
+                    let filename = "user-profile.jpg"
+                    let mimetype = "image/jpg"
+                    
+                    body.appendString("--\(boundary)\r\n")
+                    body.appendString("Content-Disposition: form-data; name=\"\(filePathKey!)\"; filename=\"\(filename)\"\r\n")
+                    body.appendString("Content-Type: \(mimetype)\r\n\r\n")
+                    body.append(imageDataKey as Data)
+                    body.appendString("\r\n")
+                    body.appendString("--\(boundary)--\r\n")
+                    
+                    return body
+    }
+    
+    func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+}
+
+extension NSMutableData {
+   
+    func appendString(_ string: String) {
+        let data = string.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        append(data!)
     }
 }

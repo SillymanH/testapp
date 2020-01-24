@@ -14,6 +14,7 @@ class SuggestedVideosCell: UITableViewCell {
     @IBOutlet weak var suggestedVideosLabel: UILabel!
     @IBOutlet weak var suggestedVideoWebView: WKWebView!
     @IBOutlet weak var allVideosWebView: WKWebView! // This is for the channelInfo view controller
+    @IBOutlet weak var allVideosLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
