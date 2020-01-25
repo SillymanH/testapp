@@ -12,27 +12,35 @@ import UIKit
 
 class HTTPFunctions {
     
-    func doRequest(_ string_url:String,_ params:String,_ httpMethod:String, completionBlock: @escaping (Any) -> Void) {
+    func doRequest(_ string_url:String = "",_ params:String = "",_ httpMethod:String = "", CustomRequest:NSMutableURLRequest?, completionBlock: @escaping (Any) -> Void) {
         
-        var url = string_url
-        
-        if httpMethod == "GET" {
-            
-            url = string_url + "?\(params)"
-        }
-        
-        let requestURL = URL(string: url)
         let session = URLSession.shared
+//        let requestURL:URL?
+        let request:NSMutableURLRequest
         
-        let request = NSMutableURLRequest(url: requestURL!)
-        request.httpMethod = httpMethod
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        if httpMethod == "POST" {
+        if (CustomRequest != nil) {
             
-           request.httpBody = params.data(using: String.Encoding.utf8)
+            request = CustomRequest!
+        } else {
+            
+            var url = string_url
+            
+            if httpMethod == "GET" {
+                
+                url = string_url + "?\(params)"
+            }
+            
+            let requestURL = URL(string: url)
+            request = NSMutableURLRequest(url: requestURL!)
+            request.httpMethod = httpMethod
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            
+            if httpMethod == "POST" {
+                
+               request.httpBody = params.data(using: String.Encoding.utf8)
+            }
         }
-
+    
         let group = DispatchGroup()
         group.enter() // Entering the code block which will get executed
 
@@ -138,58 +146,49 @@ class HTTPFunctions {
         return imageData
     }
     
-    func UploadImage(Myimage:UIImage) {
+    func UploadImage(_ uploadURL:NSURL, _ param:[String:String], _ httpMethod:String, Myimage:UIImage) -> [String : String] {
 
-        let myUrl = NSURL(string: "http://localhost:8888/test_db/Upload.php")
-
-        let request = NSMutableURLRequest(url:myUrl! as URL)
-        request.httpMethod = "POST"
-
-        let param = [
-            "firstName"  : "Sergey",
-            "lastName"   : "Kargopolov",
-            "userId"     : "9"
-        ]
+        let request = NSMutableURLRequest(url:uploadURL as URL)
+        request.httpMethod = httpMethod
+//
+//        let param = [
+//            "firstName"  : "Sergey",
+//            "lastName"   : "Kargopolov",
+//            "userId"     : "9"
+//        ]
 
         let boundary =  generateBoundaryString()
 
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
-
+        var result:[String : String] = [:]
+        
         let imageData = Myimage.jpegData(compressionQuality: 1)
 
-        if(imageData==nil)  { return }
-
+        if(imageData == nil)  {
+            
+            result = ["Error":"Something went wrong!"]
+                return result
+        }
+        
         request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
 
-        let task = URLSession.shared.dataTask(with: request as URLRequest) {
-            data, response, error in
-
-            if error != nil {
-                print(error as Any)
-                return
+        doRequest(CustomRequest: request){ json in
+            
+            guard let response = json as? NSDictionary else {
+                
+                result = ["Error":"Something went wrong!"]
+                    return
             }
-
-            // You can print out response object
-            print(response as Any)
-
-            // Print out reponse body
-            let responseString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("****** response data = \(responseString!)")
-
-            do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary
-
-                print(json as Any)
-
-            }catch
-            {
-                print(error)
+            
+            guard ((response["Status"] as? String) == "OK") else {
+                
+                result = ["Error":"Sorry, there was an error uploading your image."]
+                    return
             }
-
+            result = ["Success":response["Message"] as! String]
         }
-
-        task.resume()
+        return result
     }
 
     func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {

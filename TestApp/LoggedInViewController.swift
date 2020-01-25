@@ -72,7 +72,7 @@ class LoggedInViewController: UIViewController {
         let httpMethod = "POST"
         
         
-        self.httpRequest.doRequest(self.loginURL, paramToSend, httpMethod) { json in
+        self.httpRequest.doRequest(self.loginURL, paramToSend, httpMethod, CustomRequest: nil) { json in
             
             
             guard let response = json as? NSDictionary else {

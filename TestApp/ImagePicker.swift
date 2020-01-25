@@ -14,9 +14,11 @@ public protocol ImagePickerDelegate: class {
 
 open class ImagePicker: NSObject {
 
+    //Global Variables
     private let pickerController: UIImagePickerController
     private weak var presentationController: UIViewController?
     private weak var delegate: ImagePickerDelegate?
+   
 
     public init(presentationController: UIViewController, delegate: ImagePickerDelegate) {
         self.pickerController = UIImagePickerController()
@@ -82,10 +84,20 @@ extension ImagePicker: UIImagePickerControllerDelegate {
         self.pickerController(picker, didSelect: image)
         
         DispatchQueue.global().async {
+
+            let uploadURL = NSURL(string: "http://localhost:8888/test_db/Upload.php")
+            let httpMethod = "POST"
+            let param:[String:String] = [:]
             let http:HTTPFunctions = HTTPFunctions()
-            http.UploadImage(Myimage: image)
+            let response = http.UploadImage(uploadURL!, param, httpMethod, Myimage: image)
+            
+            var status:String = "Success"
+            if ((response["Error"]) != nil) {
+                status = "Error"
+            }
+            let alert:AlertFunctions = AlertFunctions()
+            alert.showAlert(self.presentationController!, status, msg: response[status]!)
         }
-        
         
     }
 }

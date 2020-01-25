@@ -66,7 +66,7 @@ class RegisterViewController: UIViewController {
         
         let httpMethod = "POST"
         
-        self.http.doRequest(self.registerURL, paramToSend, httpMethod) { json in
+        self.http.doRequest(self.registerURL, paramToSend, httpMethod, CustomRequest: nil) { json in
             
             guard let response = json as? NSDictionary else {
                 

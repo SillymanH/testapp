@@ -65,7 +65,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
         let httpMethod = "POST"
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
             
              guard let response = json as? NSDictionary else {
                 
@@ -306,7 +306,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                           "&action=\(action)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod){ json in
+        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod, CustomRequest: nil){ json in
             
             guard let response = json as? NSDictionary else {
                 
@@ -330,7 +330,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
     
              guard let response = json as? NSDictionary else {
                 

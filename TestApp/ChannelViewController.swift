@@ -126,7 +126,7 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
             let paramToSend = "channel_id=\(channelId)"
             let httpMethod = "POST"
             
-            self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
+            self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
         
                 guard let response = json as? NSDictionary else {
                     
@@ -157,7 +157,7 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
         let paramToSend = "channel_id=\(channelId)"
         let httpMethod = "GET"
         
-        http.doRequest(self.channelInfoURL, paramToSend, httpMethod) { json in
+        http.doRequest(self.channelInfoURL, paramToSend, httpMethod, CustomRequest: nil) { json in
             
             guard let response = json as? NSDictionary else {
                 
