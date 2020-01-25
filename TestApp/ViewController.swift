@@ -33,7 +33,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     let youtube:YoutubeFunctions = YoutubeFunctions()
     let http:HTTPFunctions = HTTPFunctions();
     var video:Video = Video()
-    let alertFunctions:AlertFunctions = AlertFunctions()
+    let alert:AlertFunctions = AlertFunctions()
     var login:LoggedInViewController = LoggedInViewController()
     
     //Global Variables
@@ -65,17 +65,17 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
         let httpMethod = "POST"
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { response in
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
             
-            guard let session_data = response["success"] as? Int else {
-            
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+             guard let response = json as? NSDictionary else {
+                
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
             
-            if session_data == 0 {
+            guard ((response["success"] as? Int) == 1) else {
                 
-                self.alertFunctions.showAlert(self ,"Error", msg: "Could not load video!")
+                self.alert.showAlert(self ,"Error", msg: "Could not load video!")
                     return
             }
             
@@ -255,10 +255,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 
                 guard (response) else {
 
-                    self.alertFunctions.showAlert(self, "Error", msg: "Could not download video")
+                    self.alert.showAlert(self, "Error", msg: "Could not download video")
                         return
                 }
-                self.alertFunctions.showAlert(self, "Success", msg: "Download Completed")
+                self.alert.showAlert(self, "Success", msg: "Download Completed")
             }
             
             let action = "DOWNLOAD"
@@ -306,19 +306,18 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                           "&action=\(action)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod){ response in
+        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod){ json in
             
-            guard let session_data = response["success"] as? Int else{
+            guard let response = json as? NSDictionary else {
                 
-//                if (action == "SET_INTERACTION" || action == "UNSET_INTERACTION")
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
             
-            if session_data == 0 {
+            guard ((response["success"] as? Int) == 1) else {
                 
                 //TODO: Handle having an invalid email address
-                self.alertFunctions.showAlert(self, "Error", msg: "Could not set interaction!")
+                self.alert.showAlert(self, "Error", msg: "Could not set interaction!")
                     return
             }
         }
@@ -331,17 +330,18 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { response in
+        self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
     
-            guard let session_data = response["success"] as? Int else{
+             guard let response = json as? NSDictionary else {
                 
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
-                return
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
+                    return
             }
             
-            if session_data == 0 {
+            guard ((response["success"] as? Int) == 1) else {
                 
-                self.alertFunctions.showAlert(self ,"Error", msg: "Could not load videos!")
+                //TODO: Handle having an invalid email address
+                self.alert.showAlert(self ,"Error", msg: "Could not load videos!")
                     return
             }
             

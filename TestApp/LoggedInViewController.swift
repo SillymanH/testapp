@@ -20,7 +20,7 @@ class LoggedInViewController: UIViewController {
     let loginURL = "http://localhost:8888/test_db/index.php/"
     
     //Global Instances
-    let alertFunctions: AlertFunctions = AlertFunctions()
+    let alert: AlertFunctions = AlertFunctions()
     let httpRequest: HTTPFunctions = HTTPFunctions()
     var user:Person = Person()
     
@@ -59,7 +59,7 @@ class LoggedInViewController: UIViewController {
             
         if(username == "" || password == "")
         {
-            alertFunctions.showAlert(self, "Error", msg: "Please fill all fields")
+            alert.showAlert(self, "Error", msg: "Please fill all fields")
             return
         }
         DoLogin(username!, password!)
@@ -72,21 +72,22 @@ class LoggedInViewController: UIViewController {
         let httpMethod = "POST"
         
         
-        self.httpRequest.doRequest(self.loginURL, paramToSend, httpMethod) { Response in   
+        self.httpRequest.doRequest(self.loginURL, paramToSend, httpMethod) { json in
             
-            guard let session_data = Response["success"] as? Int else{
-                
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
-                return
-            }
             
-            if session_data == 0 {
+            guard let response = json as? NSDictionary else {
                 
-                self.alertFunctions.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
             
-            if let info = Response["info"] as? NSDictionary  {
+            guard ((response["success"] as? Int) == 1) else {
+                
+                self.alert.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
+                    return
+            }
+            
+            if let info = response["info"] as? NSDictionary  {
                 
                 let userId = (info.value(forKey: "id") as? NSString)?.integerValue
                 let user_name = info.value(forKey: "username") as? String
@@ -102,12 +103,12 @@ class LoggedInViewController: UIViewController {
                 self.user.setMobileNumber(mobile_number!)
                 
                 //Saving data to preferences
-                self.preferences.set(userId, forKey: "userId")
-                self.preferences.set(full_name, forKey: "fullName")
-                self.preferences.set(user_name, forKey: "username")
-                self.preferences.set(email, forKey: "email")
-                self.preferences.set(mobile_number, forKey: "mobileNumber")
-                self.preferences.set(session_data, forKey: "session")
+//                self.preferences.set(userId, forKey: "userId")
+//                self.preferences.set(full_name, forKey: "fullName")
+//                self.preferences.set(user_name, forKey: "username")
+//                self.preferences.set(email, forKey: "email")
+//                self.preferences.set(mobile_number, forKey: "mobileNumber")
+//                self.preferences.set(session_data, forKey: "session")
                 
                 DispatchQueue.main.async {
                     self.dismiss(animated: true)

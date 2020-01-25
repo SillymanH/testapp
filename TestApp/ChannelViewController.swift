@@ -126,17 +126,17 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
             let paramToSend = "channel_id=\(channelId)"
             let httpMethod = "POST"
             
-            self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { response in
+            self.http.doRequest(self.videosAPI, paramToSend, httpMethod) { json in
         
-                guard let session_data = response["success"] as? Int else{
+                guard let response = json as? NSDictionary else {
                     
                     self.alert.showAlert(self, "Error", msg: "Something went wrong!")
-                    return
+                        return
                 }
                 
-                if session_data == 0 {
+                guard ((response["success"] as? Int) == 1) else {
                     
-                    self.alert.showAlert(self ,"Error", msg: "Could not load videos!")
+                    self.alert.showAlert(self ,"Error", msg: "Could not get channel info")
                         return
                 }
                 
@@ -157,15 +157,15 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
         let paramToSend = "channel_id=\(channelId)"
         let httpMethod = "GET"
         
-        http.doRequest(self.channelInfoURL, paramToSend, httpMethod) { response in
+        http.doRequest(self.channelInfoURL, paramToSend, httpMethod) { json in
             
-            guard let data = response["success"] as? Int else {
+            guard let response = json as? NSDictionary else {
                 
                 self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
             
-             if data == 0 {
+            guard ((response["success"] as? Int) == 1) else {
                 
                 self.alert.showAlert(self ,"Error", msg: "Could not get channel info")
                     return

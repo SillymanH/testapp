@@ -23,7 +23,7 @@ class RegisterViewController: UIViewController {
     let registerURL = "http://localhost:8888/test_db/index.php/"
     
     //Global Instances
-    let alertFunctions: AlertFunctions = AlertFunctions()
+    let alert: AlertFunctions = AlertFunctions()
     let http:HTTPFunctions = HTTPFunctions()
     
     override func viewDidLoad() {
@@ -42,14 +42,14 @@ class RegisterViewController: UIViewController {
         
         if (fullname == "" || username == "" || password == "" || email == "" || mobileNumber == "") {
             
-            self.alertFunctions.showAlert(self, "Error", msg: "Please fill all fields")
+            self.alert.showAlert(self, "Error", msg: "Please fill all fields")
             return
             
         }
         
         if (!_checkbox.isSelected){
             
-            self.alertFunctions.showAlert(self, "Error", msg: "Please agree to the terms and conditions")
+            self.alert.showAlert(self, "Error", msg: "Please agree to the terms and conditions")
             return
         }
         
@@ -66,25 +66,25 @@ class RegisterViewController: UIViewController {
         
         let httpMethod = "POST"
         
-        self.http.doRequest(self.registerURL, paramToSend, httpMethod) { response in
+        self.http.doRequest(self.registerURL, paramToSend, httpMethod) { json in
             
-            guard let session_data = response["success"] as? Int else{
+            guard let response = json as? NSDictionary else {
                 
-                self.alertFunctions.showAlert(self, "Error", msg: "Something went wrong!")
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
-               
-                if session_data == 0 {
-                    //TODO: Handle having an invalid email address
-                    self.alertFunctions.showAlert(self, "Error in registering", msg: "Username/Email already exists")
+            
+            guard ((response["success"] as? Int) == 1) else {
+                
+                self.alert.showAlert(self, "Error in registering", msg: "Username/Email already exists")
                     return
-                }
+            }
                     
                     //Navigating user to the login page
                     let doAction = UIAlertAction(title: "OK", style: .default) { (action) -> Void in
                     let loggedInVC = self.storyboard?.instantiateViewController(withIdentifier: "LoggedInViewController")
                     self.present(loggedInVC!, animated: true, completion: nil)}
-                    self.alertFunctions.showActionAlert(self, "Success", "You have been registered successfully.", doAction)
+                    self.alert.showActionAlert(self, "Success", "You have been registered successfully.", doAction)
         }
     }
     

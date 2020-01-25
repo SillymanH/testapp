@@ -12,7 +12,7 @@ import UIKit
 
 class HTTPFunctions {
     
-    func doRequest(_ string_url:String,_ params:String,_ httpMethod:String, completionBlock: @escaping (NSDictionary) -> Void) {
+    func doRequest(_ string_url:String,_ params:String,_ httpMethod:String, completionBlock: @escaping (Any) -> Void) {
         
         var url = string_url
         
@@ -39,28 +39,28 @@ class HTTPFunctions {
         
         let task = session.dataTask(with: request as URLRequest, completionHandler: {
         (data, response, error) in
+            
+//        print(response as Any)
 
-        guard let _:Data = data else
-        {
+        if error != nil {
+            print(error as Any)
             return
         }
+
 
         let json:Any?
 
         do
         {
             json = try JSONSerialization.jsonObject(with: data!, options: [])
+            print(json as Any)
         }
         catch
         {
+            print(error)
             return
         }
-            guard let server_response = json as? NSDictionary else {
-                return
-            }
-
-            print(server_response)
-            completionBlock(server_response)
+            completionBlock(json as Any)
             group.leave() // Leaving the code block
         })
         task.resume()
@@ -89,7 +89,7 @@ class HTTPFunctions {
           
             if let url = URL(string: sampleURL), let urlData = NSData(contentsOf: url) {
 
-              let galleryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0];
+              let galleryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
               let filePath="\(galleryPath)/demo2.mov"
 
             DispatchQueue.main.async {
@@ -140,10 +140,10 @@ class HTTPFunctions {
     
     func UploadImage(Myimage:UIImage) {
 
-        let myUrl = NSURL(string: "http://localhost:8888/test_db/uploads/Upload.php");
+        let myUrl = NSURL(string: "http://localhost:8888/test_db/Upload.php")
 
-        let request = NSMutableURLRequest(url:myUrl! as URL);
-        request.httpMethod = "POST";
+        let request = NSMutableURLRequest(url:myUrl! as URL)
+        request.httpMethod = "POST"
 
         let param = [
             "firstName"  : "Sergey",
@@ -158,7 +158,7 @@ class HTTPFunctions {
 
         let imageData = Myimage.jpegData(compressionQuality: 1)
 
-        if(imageData==nil)  { return; }
+        if(imageData==nil)  { return }
 
         request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
 
@@ -193,7 +193,7 @@ class HTTPFunctions {
     }
 
     func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
-        let body = NSMutableData();
+        let body = NSMutableData()
 
         if parameters != nil {
                 for (key, value) in parameters! {
