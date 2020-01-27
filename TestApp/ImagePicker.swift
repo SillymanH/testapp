@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol ImagePickerDelegate: class {
-    func didSelect(image: UIImage?)
+    func didSelect(image: UIImage?) -> String
 }
 
 open class ImagePicker: NSObject {
@@ -18,9 +18,11 @@ open class ImagePicker: NSObject {
     private let pickerController: UIImagePickerController
     private weak var presentationController: UIViewController?
     private weak var delegate: ImagePickerDelegate?
+    private var channel:Channel?
+    private var photoType:String?
    
 
-    public init(presentationController: UIViewController, delegate: ImagePickerDelegate) {
+    init(presentationController: UIViewController, delegate: ImagePickerDelegate, channel: Channel) {
         self.pickerController = UIImagePickerController()
 
         super.init()
@@ -31,6 +33,8 @@ open class ImagePicker: NSObject {
         self.pickerController.delegate = self
         self.pickerController.allowsEditing = true
         self.pickerController.mediaTypes = ["public.image"]
+        self.channel = channel
+        
     }
 
     private func action(for type: UIImagePickerController.SourceType, title: String) -> UIAlertAction? {
@@ -66,7 +70,7 @@ open class ImagePicker: NSObject {
     private func pickerController(_ controller: UIImagePickerController, didSelect image: UIImage?) {
         controller.dismiss(animated: true, completion: nil)
 
-        self.delegate?.didSelect(image: image)
+        photoType = self.delegate?.didSelect(image: image)
     }
 }
 
@@ -84,10 +88,10 @@ extension ImagePicker: UIImagePickerControllerDelegate {
         self.pickerController(picker, didSelect: image)
         
         DispatchQueue.global().async {
-
+            
             let uploadURL = NSURL(string: "http://localhost:8888/test_db/Upload.php")
             let httpMethod = "POST"
-            let param:[String:String] = [:]
+            let param:[String:String] = ["photoType": self.photoType!, "channelId": "\(self.channel!.getChannelId())"]
             let http:HTTPFunctions = HTTPFunctions()
             let response = http.UploadImage(uploadURL!, param, httpMethod, Myimage: image)
             
@@ -98,7 +102,6 @@ extension ImagePicker: UIImagePickerControllerDelegate {
             let alert:AlertFunctions = AlertFunctions()
             alert.showAlert(self.presentationController!, status, msg: response[status]!)
         }
-        
     }
 }
 

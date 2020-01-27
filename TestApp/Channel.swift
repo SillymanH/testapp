@@ -10,6 +10,7 @@ import Foundation
 
 class Channel {
     
+    //Properties
     private var channelOwnerId = 0
     private var channelId = 0
     private var channelName = ""
@@ -18,6 +19,13 @@ class Channel {
     private var dateCreated = ""
     private var coverPhotoURL = ""
     private var profilePhotoURL = ""
+    
+    //APIs
+    let channelInfoAPI = "http://localhost:8888/test_db/Channels.php/"
+    
+    //Global Instances
+    var http:HTTPFunctions = HTTPFunctions()
+    var alert:AlertFunctions = AlertFunctions()
     
     init() {}
     
@@ -101,4 +109,43 @@ class Channel {
         return self.profilePhotoURL
     }
     
+    func getChannelInfo(_ channelId:Int) {
+           
+           let paramToSend = "channel_id=\(channelId)"
+           let httpMethod = "GET"
+           
+           http.DoRequestReturnJSON(self.channelInfoAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
+               
+               guard let response = json as? NSDictionary else {
+                   
+                   self.alert.showAlert(self, "Error", msg: "Something went wrong!")
+                       return
+               }
+               
+               guard ((response["success"] as? Int) == 1) else {
+                   
+                   self.alert.showAlert(self ,"Error", msg: "Could not get channel info")
+                       return
+               }
+               
+               if let channelData = response["info"] as? NSDictionary {
+                   
+                   let channelOwnerId = (channelData.value(forKey: "user_id") as? NSString)?.integerValue
+                   let channelId = (channelData.value(forKey: "channel_id") as? NSString)?.integerValue
+                   let channelName = channelData.value(forKey: "channel_name") as? String
+                   let subscribers = (channelData.value(forKey: "channel_subscribers_number") as? NSString)?.integerValue
+                   let dateCreated = channelData.value(forKey: "date_created") as? String
+                   let coverPhotoURL = channelData.value(forKey: "cover_photo_url") as? String
+                   let profilePhotoURL = channelData.value(forKey: "profile_photo_url") as? String
+                   
+                self.setChannelOwnderId(channelOwnerId!)
+                self.setChannelId(channelId!)
+                self.setChannelName(channelName!)
+                self.setSubscribers(subscribers!)
+                self.setDateCreated(dateCreated!)
+                self.setCoverPhotoURL(coverPhotoURL!)
+                self.setProfilePhotoURL(profilePhotoURL!)
+            }
+        }
+    }
 }

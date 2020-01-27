@@ -66,10 +66,10 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     
     func getChannelData() {
         
-        let channelVC = ChannelViewController()
+        let channelVC = Channel()
         channelVC.getChannelInfo(video.getChannelId())
-        let url = channelVC.channel.getCoverPhotoURL()
-        let channelName = channelVC.channel.getChannelName()
+        let url = channelVC.getCoverPhotoURL()
+        let channelName = channelVC.getChannelName()
         channelNameLabel.text = channelName
         let imageData = http.DownloadImage(from: url)
         profileBtn.setImage(UIImage(data: imageData), for: .normal)
