@@ -12,10 +12,10 @@ import UIKit
 
 class HTTPFunctions {
     
-    func doRequest(_ string_url:String = "",_ params:String = "",_ httpMethod:String = "", CustomRequest:NSMutableURLRequest?, completionBlock: @escaping (Any) -> Void) {
+    func DoRequestReturnJSON(_ string_url:String = "",_ params:String = "",_ httpMethod:String = "", CustomRequest:NSMutableURLRequest?, completionBlock: @escaping (Any) -> Void) {
         
         let session = URLSession.shared
-//        let requestURL:URL?
+
         let request:NSMutableURLRequest
         
         if (CustomRequest != nil) {
@@ -75,21 +75,7 @@ class HTTPFunctions {
         group.wait() // Thread waits for the code block to finish
     }
     
-   func imageRequest(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
-    
-    let session = URLSession.shared
-    let request = NSMutableURLRequest(url: url)
-    request.httpMethod = "GET"
-  
-    let task = session.dataTask(with: request as URLRequest) {
-        data, response, error in
-    
-        return completion(data, response, error)
-    }
-    task.resume()
-    }
-    
-    func Download(_ url_string:String, completionBlock: @escaping (Bool) -> Void) {
+    func DownloadVideo(_ url_string:String, completionBlock: @escaping (Bool) -> Void) {
 
         let sampleURL = "http://localhost:8888/test_db/videos/demo.mov" // Demo video just to test the function
 
@@ -124,19 +110,45 @@ class HTTPFunctions {
            }
         }
     
-    func downloadImage(from url: URL) -> Data {
-        print(url)
+    func DoRequestReturnCompleteResponse(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+       
+       let session = URLSession.shared
+       let request = NSMutableURLRequest(url: url)
+       request.httpMethod = "GET"
+       
+//       let group = DispatchGroup()
+//       group.enter() // Entering the code block which will get executed
+     
+       let task = session.dataTask(with: request as URLRequest) {
+           data, response, error in
         
+        if error != nil {
+            print(error as Any)
+            return
+        }
+           completion(data, response, error)
+//           group.leave() // Leaving the code block
+       }
+       task.resume()
+//       group.wait() // Thread waits for the code block to finish
+       }
+    
+    func DownloadImage(from url: String) -> Data {
+    
         var imageData:Data = Data()
         
         let group = DispatchGroup()
         group.enter() // Entering the code block which will get executed
         
-        self.imageRequest(from: url) { data, response, error in
+        let photoURL = URL(string: url)
         
-            guard let data = data, error == nil else { return }
-            
-            print(response?.suggestedFilename ?? url.lastPathComponent)
+        self.DoRequestReturnCompleteResponse(from: photoURL!) { data, response, error in
+        
+            guard let data = data, error == nil else {
+                
+                print(error as Any)
+                return
+            }
                 
             imageData = data
             
@@ -150,30 +162,22 @@ class HTTPFunctions {
 
         let request = NSMutableURLRequest(url:uploadURL as URL)
         request.httpMethod = httpMethod
-//
-//        let param = [
-//            "firstName"  : "Sergey",
-//            "lastName"   : "Kargopolov",
-//            "userId"     : "9"
-//        ]
-
-        let boundary =  generateBoundaryString()
-
+        
+        let boundary =  GenerateBoundaryString()
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
         var result:[String : String] = [:]
-        
         let imageData = Myimage.jpegData(compressionQuality: 1)
-
+        
         if(imageData == nil)  {
             
             result = ["Error":"Something went wrong!"]
                 return result
         }
         
-        request.httpBody = createBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
+        request.httpBody = CreateBodyWithParameters(parameters: param, filePathKey: "file", imageDataKey: imageData! as NSData, boundary: boundary) as Data
 
-        doRequest(CustomRequest: request){ json in
+        DoRequestReturnJSON(CustomRequest: request){ json in
             
             guard let response = json as? NSDictionary else {
                 
@@ -191,7 +195,7 @@ class HTTPFunctions {
         return result
     }
 
-    func createBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
+    func CreateBodyWithParameters(parameters: [String: String]?, filePathKey: String?, imageDataKey: NSData, boundary: String) -> NSData {
         let body = NSMutableData()
 
         if parameters != nil {
@@ -215,7 +219,7 @@ class HTTPFunctions {
                     return body
     }
     
-    func generateBoundaryString() -> String {
+    func GenerateBoundaryString() -> String {
         return "Boundary-\(NSUUID().uuidString)"
     }
 }

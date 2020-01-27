@@ -21,9 +21,11 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var subscriberNumber: UILabel!
     @IBOutlet weak var channelVideosTable: UITableView!
     
-    //API
-    let channelInfoURL = "http://localhost:8888/test_db/Channels.php"
+    //APIs
+    let channelInfoAPI = "http://localhost:8888/test_db/Channels.php/"
     let videosAPI = "http://localhost:8888/test_db/Videos.php/"
+    let coverPhotoPath = "http://localhost:8888/test_db/uploads/channels/"
+    let profilePhotoPath = "http://localhost:8888/test_db/uploads/channels/"
     
     //Global Instances
     let http:HTTPFunctions = HTTPFunctions()
@@ -33,7 +35,7 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     //Global Variables
     var imagePicker: ImagePicker!
-    var isCoverUpload:Bool = false // This flag is to determine if user wants to upload a cover or a profile
+    var isCoverUpload:Bool = false // This flag is to determine if user wants to upload a cover or a profile photo
     var video:Video = Video()
     var channelVideos: [NSDictionary] = []
     var youtubeIds:[String] = []
@@ -43,18 +45,38 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+            
+        let channelId = self.video.getChannelId()
+        self.getChannelInfo(channelId)
+        let coverPhotoURL = self.channel.getCoverPhotoURL()
+        let profilePhotoURL = self.channel.getProfilePhotoURL()
+        self.getCoverPhoto(coverPhotoURL)
+        self.getProfilePhoto(profilePhotoURL)
         
-        getChannelInfo()
         let channelName = self.channel.getChannelName()
         let subscribers = self.channel.getSubscribers()
-        let channelId = self.channel.getChannelId()
-        self.channelVideos = getChannelVideos(channelId)
-        
-        
         channelNameLabel?.text = channelName
         subscriberNumber?.text = "\(self.youtube.statCheck(subscribers)) subscribers"
-        reloadVideoTable()
         
+
+        self.channelVideos = self.getChannelVideos(channelId)
+        self.reloadVideoTable()
+        
+        
+    }
+    
+    func getCoverPhoto(_ coverPhotoURL:String) { //Check if the user already has a cover photo
+        
+//        let coverPhotoURL = URL (string: coverPhotoURL)
+        let imageData = http.DownloadImage(from: coverPhotoURL)
+        coverPhoto.image = UIImage(data: imageData)
+    }
+    
+    func getProfilePhoto(_ profilePhotoURL:String) { //Check if the user already has a profile photo
+        
+//        let profilePhotoURL = URL (string: profilePhotoURL)
+        let imageData = http.DownloadImage(from: profilePhotoURL)
+        profileImage.image = UIImage(data: imageData)
     }
     
     @IBAction func CoverPhotoUploadBtnPressed(_ sender: UIButton) {
@@ -126,7 +148,7 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
             let paramToSend = "channel_id=\(channelId)"
             let httpMethod = "POST"
             
-            self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
+            self.http.DoRequestReturnJSON(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
         
                 guard let response = json as? NSDictionary else {
                     
@@ -150,14 +172,12 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
             return videosData
     }
     
-    func getChannelInfo() {
-        
-        let channelId = self.video.getChannelId()
+    func getChannelInfo(_ channelId:Int) {
         
         let paramToSend = "channel_id=\(channelId)"
         let httpMethod = "GET"
         
-        http.doRequest(self.channelInfoURL, paramToSend, httpMethod, CustomRequest: nil) { json in
+        http.DoRequestReturnJSON(self.channelInfoAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
             
             guard let response = json as? NSDictionary else {
                 
@@ -178,12 +198,16 @@ class ChannelViewController: UIViewController, UIImagePickerControllerDelegate, 
                 let channelName = channelData.value(forKey: "channel_name") as? String
                 let subscribers = (channelData.value(forKey: "channel_subscribers_number") as? NSString)?.integerValue
                 let dateCreated = channelData.value(forKey: "date_created") as? String
+                let coverPhotoURL = channelData.value(forKey: "cover_photo_url") as? String
+                let profilePhotoURL = channelData.value(forKey: "profile_photo_url") as? String
                 
                 self.channel.setChannelOwnderId(channelOwnerId!)
                 self.channel.setChannelId(channelId!)
                 self.channel.setChannelName(channelName!)
                 self.channel.setSubscribers(subscribers!)
                 self.channel.setDateCreated(dateCreated!)
+                self.channel.setCoverPhotoURL(coverPhotoURL!)
+                self.channel.setProfilePhotoURL(profilePhotoURL!)
                 
             }
         }

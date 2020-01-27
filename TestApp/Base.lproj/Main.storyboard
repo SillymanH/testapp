@@ -197,8 +197,8 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2a-ul-zE7">
-                                <rect key="frame" x="28" y="355" width="29" height="61"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2a-ul-zE7">
+                                <rect key="frame" x="12" y="359" width="54" height="56"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="person.circle.fill" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
@@ -214,12 +214,14 @@
                     <navigationItem key="navigationItem" id="QOy-Xb-wUE"/>
                     <connections>
                         <outlet property="NumberofSharesLabel" destination="pAH-La-bw0" id="eSB-6w-645"/>
+                        <outlet property="channelNameLabel" destination="cND-Xy-gOv" id="kJe-yt-XOU"/>
                         <outlet property="dislikeBtn" destination="cGG-QK-szI" id="IZL-Xx-T9y"/>
                         <outlet property="likeBtn" destination="s0l-Dd-oiu" id="JWl-Ad-rvE"/>
                         <outlet property="numberOfDislikesLabel" destination="8F2-pa-G8K" id="9ch-3w-Xzv"/>
                         <outlet property="numberOfDownloadsLabel" destination="Rdb-ad-cO8" id="Tjn-mK-QG9"/>
                         <outlet property="numberOfLikesLabel" destination="Tui-w3-u17" id="KFa-bY-BpM"/>
                         <outlet property="numberOfSavesLabel" destination="IyS-jf-vR6" id="oDX-kF-4JQ"/>
+                        <outlet property="profileBtn" destination="a2a-ul-zE7" id="0lz-rV-54P"/>
                         <outlet property="saveBtn" destination="FzP-BL-a8v" id="3UT-5S-jvk"/>
                         <outlet property="suggestedVideosTable" destination="FFt-Gj-q6G" id="6ar-eU-MgG"/>
                         <outlet property="videoTitleLabel" destination="334-i5-nxX" id="OgV-wX-EhL"/>

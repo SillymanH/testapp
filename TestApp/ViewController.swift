@@ -23,6 +23,8 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
     @IBOutlet weak var NumberofSharesLabel: UILabel!
     @IBOutlet weak var numberOfDownloadsLabel: UILabel!
     @IBOutlet weak var numberOfSavesLabel: UILabel!
+    @IBOutlet weak var profileBtn: UIButton!
+    @IBOutlet weak var channelNameLabel: UILabel!
     
     
     //APIs
@@ -59,13 +61,25 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         reloadVideoView(youtubeVideoId: self.videoToDisplayId)
         reloadVideoTable()
+        getChannelData()
+    }
+    
+    func getChannelData() {
+        
+        let channelVC = ChannelViewController()
+        channelVC.getChannelInfo(video.getChannelId())
+        let url = channelVC.channel.getCoverPhotoURL()
+        let channelName = channelVC.channel.getChannelName()
+        channelNameLabel.text = channelName
+        let imageData = http.DownloadImage(from: url)
+        profileBtn.setImage(UIImage(data: imageData), for: .normal)
     }
 
     func reloadVideoView(youtubeVideoId:String) {
     
         let paramToSend = "youtubeVideoId=\(youtubeVideoId)"
         let httpMethod = "POST"
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
+        self.http.DoRequestReturnJSON(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
             
              guard let response = json as? NSDictionary else {
                 
@@ -238,7 +252,6 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         
         if isSessionStored() {
             
-//            let youtubeIds = self.video.getSpecificVideoData(self.suggestedVideos, attribut: "youtube_video_id")
             let url = "http://www.youtube.com/embed/\(self.youtubeIds[0])"
             
 //            guard (isInteractionBtnClicked(sender)) else {
@@ -251,7 +264,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
 //                self.alertFunctions.showActionAlert(self, "Warning", "Are you sure you want to delete this video from downloads?", doAction)
 //                return
 //            }
-            http.Download(url) { response in
+            http.DownloadVideo(url) { response in
 
                 guard (response) else {
 
@@ -306,7 +319,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
                           "&action=\(action)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.interactionAPI, paramToSend, httpMethod, CustomRequest: nil){ json in
+        self.http.DoRequestReturnJSON(self.interactionAPI, paramToSend, httpMethod, CustomRequest: nil){ json in
             
             guard let response = json as? NSDictionary else {
                 
@@ -330,7 +343,7 @@ class ViewController: UIViewController, WKNavigationDelegate, UITableViewDelegat
         let paramToSend = "numberOfVideos=\(numberOfVideos)"
         let httpMethod = "POST"
         
-        self.http.doRequest(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
+        self.http.DoRequestReturnJSON(self.videosAPI, paramToSend, httpMethod, CustomRequest: nil) { json in
     
              guard let response = json as? NSDictionary else {
                 

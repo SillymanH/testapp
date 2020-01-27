@@ -16,8 +16,12 @@ class Channel {
     private var channelURL = ""
     private var subscribers = 0
     private var dateCreated = ""
+    private var coverPhotoURL = ""
+    private var profilePhotoURL = ""
     
     init() {}
+    
+    //Setters
     
     public func setChannelOwnderId(_ channelOwnerId:Int) {
         
@@ -49,6 +53,16 @@ class Channel {
            self.dateCreated = dateCreated
        }
     
+    public func setCoverPhotoURL(_ url:String) {
+        self.coverPhotoURL = url
+    }
+    
+    public func setProfilePhotoURL(_ url:String) {
+        self.profilePhotoURL = url
+    }
+    
+    // Getters
+    
     public func getChannelOwnderId() -> Int {
         
         return self.channelOwnerId
@@ -77,6 +91,14 @@ class Channel {
     public func getDateCreated() -> String {
         
         return self.dateCreated
+    }
+    
+    public func getCoverPhotoURL() -> String {
+        return self.coverPhotoURL
+    }
+    
+    public func getProfilePhotoURL() -> String {
+        return self.profilePhotoURL
     }
     
 }
