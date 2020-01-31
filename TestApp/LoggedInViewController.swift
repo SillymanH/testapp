@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 class LoggedInViewController: UIViewController {
 
@@ -40,6 +41,12 @@ class LoggedInViewController: UIViewController {
         }
         else
         {
+            if let accessToken = AccessToken.current {
+                   // User is logged in, use 'accessToken' here.
+                let userId = accessToken.userID
+                user.setUserId(Int(userId)!)
+                LoginDone()
+               }
             LoginToDo()
         }
     }
@@ -123,6 +130,13 @@ class LoggedInViewController: UIViewController {
           _password.isEnabled = true
           
           _login_button.setTitle("Login", for: .normal)
+        
+        let loginButton:FBLoginButton = FBLoginButton() //(readPermissions: [ .publicProfile ])
+        loginButton.permissions.append("email")
+//        loginButton.permissions.append("publicProfile")
+        loginButton.center = view.center
+        view.addSubview(loginButton)
+        
     }
     
     func LoginDone() {
