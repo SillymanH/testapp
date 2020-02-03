@@ -9,7 +9,8 @@
 import UIKit
 import FBSDKLoginKit
 
-class LoggedInViewController: UIViewController {
+class LoggedInViewController: UIViewController , LoginButtonDelegate {
+   
 
     
     //Outlets
@@ -27,29 +28,82 @@ class LoggedInViewController: UIViewController {
     
     //Global Variables
     let preferences = UserDefaults.standard
+    var fbLoginButton:FBLoginButton = FBLoginButton()
+    let loginManager = LoginManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        if (preferences.object(forKey: "session") != nil)
-        {
+        if (preferences.object(forKey: "session") != nil || AccessToken.current != nil) {
+            
             LoginDone()
             preferences.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
             preferences.synchronize()
-        }
-        else
-        {
-            if let accessToken = AccessToken.current {
-                   // User is logged in, use 'accessToken' here.
-                let userId = accessToken.userID
-                user.setUserId(Int(userId)!)
-                LoginDone()
-               }
+            
+        }else {
+            
             LoginToDo()
         }
     }
+    
+    func fetchUserFBData() {
+        
+        let params = ["fields": "email"]
+        GraphRequest(graphPath: "me", parameters: params).start {
+            (graphConnection, response, error) in
+            
+            if error != nil {
+                print(error as Any)
+                return
+            }
+            
+            let NSresponse = response as? NSDictionary
+            if let email = NSresponse!["email"] as? String {
+                
+                self.user.setEmail(email)
+                
+                let isLoginSuccessful = self.DoLogin("", "")
+                if isLoginSuccessful {
+                   
+                    self.LoginDone()
+                    
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true)
+                    }
+                    
+                } else {
+                    self.LoginToDo()
+                }
+            }
+            
+            print(response!)
+        }
+    }
+    
+    func createFBLoginButton() {
+        
+        fbLoginButton.delegate = self
+        fbLoginButton.center = view.center
+        view.addSubview(fbLoginButton)
+        fbLoginButton.permissions.append("email")
+    }
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        
+           print("Completed Login")
+           fetchUserFBData()
+       }
+
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+
+    }
+
+    func loginButtonWillLogin(_ loginButton: FBLoginButton) -> Bool {
+        return true
+    }
+    
     
     @IBAction func LoginPressed(_ sender: Any) {
         
@@ -58,6 +112,7 @@ class LoggedInViewController: UIViewController {
             preferences.removeObject(forKey: "session")
                 
             LoginToDo()
+            loginManager.logOut()
             return
         }
         
@@ -69,36 +124,51 @@ class LoggedInViewController: UIViewController {
             alert.showAlert(self, "Error", msg: "Please fill all fields")
             return
         }
-        DoLogin(username!, password!)
+        let isLoginSuccessful = DoLogin(username!, password!)
+        if isLoginSuccessful {
+            
+            DispatchQueue.main.async {
+                self.dismiss(animated: true)
+            }
+        }
     }
     
-    func DoLogin(_ user:String, _ psw:String) {
+    func DoLogin(_ user:String, _ psw:String) -> Bool {
         
-        let paramToSend = "username=\(user)" +
-                          "&password=\(psw)"
+        var paramToSend = ""
+        if (user == "" && psw == "") {
+            
+            paramToSend = "username=&password=&email=" + self.user.getEmail()
+        }else {
+            
+            paramToSend = "username=\(user)&password=\(psw)&email="
+        }
         let httpMethod = "POST"
         
-        
+        var success = false
         self.httpRequest.DoRequestReturnJSON(self.loginURL, paramToSend, httpMethod, CustomRequest: nil) { json in
             
             
             guard let response = json as? NSDictionary else {
                 
+                success = false
                 self.alert.showAlert(self, "Error", msg: "Something went wrong!")
                     return
             }
             
             guard ((response["success"] as? Int) == 1) else {
                 
-                self.alert.showAlert(self ,"Invalid Login", msg: "Wrong username or password")
+                success = false
+                self.alert.showAlert(self ,"Error", msg: "Invalid Login")
                     return
             }
             
             if let info = response["info"] as? NSDictionary  {
                 
+                self.preferences.set(response, forKey: "session") //Setting session
+                
                 let userId = (info.value(forKey: "id") as? NSString)?.integerValue
                 let user_name = info.value(forKey: "username") as? String
-                let email = info.value(forKey: "email") as? String
                 let full_name = info.value(forKey: "fullname") as? String
                 let mobile_number = info.value(forKey: "mobileNumber") as? String
                 
@@ -106,46 +176,34 @@ class LoggedInViewController: UIViewController {
                 self.user.setUserId(userId!)
                 self.user.setFullName(full_name!)
                 self.user.setUsername(user_name!)
-                self.user.setEmail(email!)
                 self.user.setMobileNumber(mobile_number!)
                 
-                //Saving data to preferences
-//                self.preferences.set(userId, forKey: "userId")
-//                self.preferences.set(full_name, forKey: "fullName")
-//                self.preferences.set(user_name, forKey: "username")
-//                self.preferences.set(email, forKey: "email")
-//                self.preferences.set(mobile_number, forKey: "mobileNumber")
-//                self.preferences.set(session_data, forKey: "session")
-                
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true)
+                guard let email = info.value(forKey: "email") as? String else {
+                    
+                    success = true
+                    return
                 }
+                self.user.setEmail(email) //Setting email if returned by response
+                success = true
             }
         }
+        return success
     }
     
     func LoginToDo() {
         
-          _username.isEnabled = true
-          _password.isEnabled = true
+        _username.isEnabled = true
+        _password.isEnabled = true
           
-          _login_button.setTitle("Login", for: .normal)
-        
-        let loginButton:FBLoginButton = FBLoginButton() //(readPermissions: [ .publicProfile ])
-        loginButton.permissions.append("email")
-//        loginButton.permissions.append("publicProfile")
-        loginButton.center = view.center
-        view.addSubview(loginButton)
-        
+        _login_button.setTitle("Login", for: .normal)
+        createFBLoginButton()
     }
     
     func LoginDone() {
         
           _username.isEnabled = false
           _password.isEnabled = false
-          
           _login_button.setTitle("Logout", for: .normal)
-        
     }
         
 }
