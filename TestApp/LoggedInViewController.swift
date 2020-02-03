@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKLoginKit
+import GoogleSignIn
 
 class LoggedInViewController: UIViewController , LoginButtonDelegate {
    
@@ -18,6 +19,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
     @IBOutlet weak var rememberMeCheckbox: UIButton!
+    @IBOutlet weak var gLoginButton: GIDSignInButton!
     
     // APIs
     let loginURL = "http://localhost:8888/test_db/index.php/"
@@ -29,8 +31,9 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     
     //Global Variables
     let preferences = UserDefaults.standard
-    var fbLoginButton:FBLoginButton = FBLoginButton()
+    var fbLoginButton = FBLoginButton()
     let loginManager = LoginManager()
+//    var gLoginButton = GIDSignInButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,6 +91,16 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
         fbLoginButton.permissions.append("email")
     }
     
+    func createGoogleLoginButton() {
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+
+        // Automatically sign in the user.
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        
+//        gLoginButton.center = view.center
+    }
+    
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
         
            print("Completed Login")
@@ -109,6 +122,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
         {
             preferences.removeObject(forKey: "session")
             loginManager.logOut()
+            GIDSignIn.sharedInstance().signOut()
             LoginToDo()
             return
         }
@@ -211,6 +225,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
             rememberMeCheckbox.isSelected = true
         }
         createFBLoginButton()
+        createGoogleLoginButton()
     }
     
     func LoginDone() {

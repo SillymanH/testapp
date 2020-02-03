@@ -9,6 +9,7 @@ target 'TestApp' do
   # Pods for TestApp
   pod 'FBSDKCoreKit'
   pod 'FBSDKLoginKit'
+  pod 'GoogleSignIn'
 
   target 'TestAppTests' do
     inherit! :search_paths
