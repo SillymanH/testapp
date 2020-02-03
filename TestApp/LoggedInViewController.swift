@@ -17,7 +17,8 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     @IBOutlet weak var _username: UITextField!
     @IBOutlet weak var _password: UITextField!
     @IBOutlet weak var _login_button: UIButton!
-
+    @IBOutlet weak var rememberMeCheckbox: UIButton!
+    
     // APIs
     let loginURL = "http://localhost:8888/test_db/index.php/"
     
@@ -39,13 +40,10 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
         if (preferences.object(forKey: "session") != nil || AccessToken.current != nil) {
             
             LoginDone()
-            preferences.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
-            preferences.synchronize()
+//            preferences.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+//            preferences.synchronize()
             
-        }else {
-            
-            LoginToDo()
-        }
+        }else { LoginToDo() }
     }
     
     func fetchUserFBData() {
@@ -97,7 +95,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
        }
 
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-
+        
     }
 
     func loginButtonWillLogin(_ loginButton: FBLoginButton) -> Bool {
@@ -110,9 +108,8 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
         if(_login_button.titleLabel?.text == "Logout")
         {
             preferences.removeObject(forKey: "session")
-                
-            LoginToDo()
             loginManager.logOut()
+            LoginToDo()
             return
         }
         
@@ -124,6 +121,18 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
             alert.showAlert(self, "Error", msg: "Please fill all fields")
             return
         }
+        
+        if(rememberMeCheckbox.isSelected) {
+            
+            preferences.set(username, forKey: "username") //save username if remember me checkbox is checked
+        }else {
+            
+            if (preferences.object(forKey: "username") != nil) {
+                
+                preferences.removeObject(forKey: "username")
+            }
+        }
+        
         let isLoginSuccessful = DoLogin(username!, password!)
         if isLoginSuccessful {
             
@@ -144,6 +153,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
             paramToSend = "username=\(user)&password=\(psw)&email="
         }
         let httpMethod = "POST"
+        
         
         var success = false
         self.httpRequest.DoRequestReturnJSON(self.loginURL, paramToSend, httpMethod, CustomRequest: nil) { json in
@@ -193,9 +203,13 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     func LoginToDo() {
         
         _username.isEnabled = true
+        _username.text = preferences.object(forKey: "username") as? String
         _password.isEnabled = true
-          
         _login_button.setTitle("Login", for: .normal)
+        
+        if preferences.bool(forKey: "rememberMe") {
+            rememberMeCheckbox.isSelected = true
+        }
         createFBLoginButton()
     }
     
@@ -205,5 +219,16 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
           _password.isEnabled = false
           _login_button.setTitle("Logout", for: .normal)
     }
+    
+    @IBAction func rememberMeCheckboxChecked(_ sender: UIButton) {
+        
+        if sender.isSelected {
+            sender.isSelected = false
+        }else {
+            sender.isSelected = true
+        }
+        preferences.set(sender.isSelected, forKey: "rememberMe") //Saving the state of the remember me checkbox
+    }
+    
         
 }

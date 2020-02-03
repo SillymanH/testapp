@@ -420,6 +420,7 @@
                                 <connections>
                                     <action selector="checkBoxTapped:" destination="32i-Rw-YKI" eventType="touchUpInside" id="Dqa-tA-Ezo"/>
                                     <action selector="checkBoxTapped:" destination="5Xa-lj-odP" eventType="touchUpInside" id="squ-Ub-hJq"/>
+                                    <action selector="rememberMeCheckboxChecked:" destination="Dvd-0m-dWR" eventType="touchUpInside" id="3Hl-Ul-bT8"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remember me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5UK-jM-7jf">
@@ -458,6 +459,7 @@
                         <outlet property="_login_button" destination="uMV-Kj-kwc" id="eIK-Ip-mGG"/>
                         <outlet property="_password" destination="JYh-Qm-mOB" id="2vE-Dx-Uy0"/>
                         <outlet property="_username" destination="mOf-xD-tfb" id="y72-q0-VC3"/>
+                        <outlet property="rememberMeCheckbox" destination="ibo-Re-cq8" id="f82-Av-eJd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pzJ-3F-qtG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
