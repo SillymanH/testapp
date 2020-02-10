@@ -10,7 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import GoogleSignIn
 
-class LoggedInViewController: UIViewController , LoginButtonDelegate {
+class LoggedInViewController: UIViewController , LoginButtonDelegate, GIDSignInDelegate {
    
 
     
@@ -37,8 +37,6 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         
         if (preferences.object(forKey: "session") != nil || AccessToken.current != nil) {
             
@@ -48,73 +46,6 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
             
         }else { LoginToDo() }
     }
-    
-    func fetchUserFBData() {
-        
-        let params = ["fields": "email"]
-        GraphRequest(graphPath: "me", parameters: params).start {
-            (graphConnection, response, error) in
-            
-            if error != nil {
-                print(error as Any)
-                return
-            }
-            
-            let NSresponse = response as? NSDictionary
-            if let email = NSresponse!["email"] as? String {
-                
-                self.user.setEmail(email)
-                
-                let isLoginSuccessful = self.DoLogin("", "")
-                if isLoginSuccessful {
-                   
-                    self.LoginDone()
-                    
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: true)
-                    }
-                    
-                } else {
-                    self.LoginToDo()
-                }
-            }
-            
-            print(response!)
-        }
-    }
-    
-    func createFBLoginButton() {
-        
-        fbLoginButton.delegate = self
-        fbLoginButton.center = view.center
-        view.addSubview(fbLoginButton)
-        fbLoginButton.permissions.append("email")
-    }
-    
-    func createGoogleLoginButton() {
-        
-        GIDSignIn.sharedInstance()?.presentingViewController = self
-
-        // Automatically sign in the user.
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
-        
-//        gLoginButton.center = view.center
-    }
-    
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        
-           print("Completed Login")
-           fetchUserFBData()
-       }
-
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        
-    }
-
-    func loginButtonWillLogin(_ loginButton: FBLoginButton) -> Bool {
-        return true
-    }
-    
     
     @IBAction func LoginPressed(_ sender: Any) {
         
@@ -147,7 +78,7 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
             }
         }
         
-        let isLoginSuccessful = DoLogin(username!, password!)
+        let isLoginSuccessful = DoLogin(username!, password!, gToken: nil)
         if isLoginSuccessful {
             
             DispatchQueue.main.async {
@@ -156,18 +87,31 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
         }
     }
     
-    func DoLogin(_ user:String, _ psw:String) -> Bool {
+    @IBAction func rememberMeCheckboxChecked(_ sender: UIButton) {
+        
+        if sender.isSelected {
+            sender.isSelected = false
+        }else {
+            sender.isSelected = true
+        }
+        preferences.set(sender.isSelected, forKey: "rememberMe") //Saving the state of the remember me checkbox
+    }
+    
+    func DoLogin(_ user:String?, _ psw:String?, gToken:String?) -> Bool {
         
         var paramToSend = ""
-        if (user == "" && psw == "") {
+        if(user == nil && psw == nil && gToken == nil) {
             
-            paramToSend = "username=&password=&email=" + self.user.getEmail()
+            paramToSend = "username=&password=&gtoken=&email=" + self.user.getEmail() //It's an FB login
+        }
+        if(user == nil && psw == nil && gToken != nil) {
+            
+            paramToSend = "username=&password=&email=&gtoken=" + gToken! //It's an gmail login
         }else {
-            
-            paramToSend = "username=\(user)&password=\(psw)&email="
+
+            paramToSend = "username=\(user!)&password=\(psw!)&email=&gtoken=" //It's a username & password login
         }
         let httpMethod = "POST"
-        
         
         var success = false
         self.httpRequest.DoRequestReturnJSON(self.loginURL, paramToSend, httpMethod, CustomRequest: nil) { json in
@@ -230,20 +174,127 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate {
     
     func LoginDone() {
         
-          _username.isEnabled = false
-          _password.isEnabled = false
-          _login_button.setTitle("Logout", for: .normal)
+        _username.isEnabled = false
+        _password.isEnabled = false
+        _login_button.setTitle("Logout", for: .normal)
+        gLoginButton.isHidden = true
     }
     
-    @IBAction func rememberMeCheckboxChecked(_ sender: UIButton) {
+    func createFBLoginButton() {
+               
+               fbLoginButton.delegate = self
+               fbLoginButton.center = view.center
+               view.addSubview(fbLoginButton)
+               fbLoginButton.permissions.append("email")
+    }
+    
+    func fetchUserFBData() {
         
-        if sender.isSelected {
-            sender.isSelected = false
-        }else {
-            sender.isSelected = true
+        let params = ["fields": "email"]
+        GraphRequest(graphPath: "me", parameters: params).start {
+            (graphConnection, response, error) in
+            
+            if error != nil {
+                print(error as Any)
+                    return
+            }
+            
+            let NSresponse = response as? NSDictionary
+                if let email = NSresponse!["email"] as? String {
+                    
+                    self.user.setEmail(email)
+                    
+                    let isLoginSuccessful = self.DoLogin(nil, nil, gToken: nil)
+                    if isLoginSuccessful {
+                       
+                        self.LoginDone()
+                        
+                        DispatchQueue.main.async {
+                            self.dismiss(animated: true)
+                        }
+                    } else {
+                        self.LoginToDo()
+                    }
+            }
+                print(response!)
         }
-        preferences.set(sender.isSelected, forKey: "rememberMe") //Saving the state of the remember me checkbox
     }
     
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        
+           print("Completed Login")
+           fetchUserFBData()
+       }
+
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        
+    }
+
+    func loginButtonWillLogin(_ loginButton: FBLoginButton) -> Bool {
+        return true
+    }
+    
+    func createGoogleLoginButton() {
+        
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        // Automatically sign in the user.
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        gLoginButton.isHidden = false
+    }
+    
+    // [START signin_handler]
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        
+        if let error = error {
+            
+            if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
+                print("The user has not signed in before or they have since signed out.")
+               } else {
+                 print("\(error.localizedDescription)")
+               }
+               // [START_EXCLUDE silent]
+               NotificationCenter.default.post(
+                 name: Notification.Name(rawValue: "ToggleAuthUINotification"), object: nil, userInfo: nil)
+               // [END_EXCLUDE]
+               return
+             }
+               // Perform any operations on signed in user here.
+    //             let userId = user.userID                  // For client-side use only!
+    //             let fullName = user.profile.name
+    //             let givenName = user.profile.givenName
+    //             let familyName = user.profile.familyName
+            let idToken = user.authentication.idToken // Safe to send to the server
+            let email = user.profile.email
+            let isLoginSuccessful = DoLogin(nil, nil, gToken: idToken)
+            if isLoginSuccessful {
+                
+                    self.LoginDone()
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true)
+                    }
+                } else {
+                    self.LoginToDo()
+                }
+                 // [START_EXCLUDE]
+                 NotificationCenter.default.post(
+                   name: Notification.Name(rawValue: "ToggleAuthUINotification"),
+                   object: nil,
+                   userInfo: ["statusText": "Signed in user:\n\(email!)"])
+                 // [END_EXCLUDE]
+               }
+               // [END signin_handler]
+    
+    // [START disconnect_handler]
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
+        // Perform any operations when the user disconnects from app here.
+        // [START_EXCLUDE]
+        NotificationCenter.default.post(
+            name: Notification.Name(rawValue: "ToggleAuthUINotification"),
+            object: nil,
+            userInfo: ["statusText": "User has disconnected."])
+            // [END_EXCLUDE]
+    }
+           // [END disconnect_handler]
         
 }

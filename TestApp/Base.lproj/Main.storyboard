@@ -464,6 +464,7 @@
                         <outlet property="_login_button" destination="uMV-Kj-kwc" id="eIK-Ip-mGG"/>
                         <outlet property="_password" destination="JYh-Qm-mOB" id="2vE-Dx-Uy0"/>
                         <outlet property="_username" destination="mOf-xD-tfb" id="y72-q0-VC3"/>
+                        <outlet property="gLoginButton" destination="pN6-O5-kMn" id="0cn-Jp-cav"/>
                         <outlet property="rememberMeCheckbox" destination="ibo-Re-cq8" id="f82-Av-eJd"/>
                     </connections>
                 </viewController>
