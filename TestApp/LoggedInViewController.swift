@@ -200,6 +200,8 @@ class LoggedInViewController: UIViewController , LoginButtonDelegate, GIDSignInD
             }
             
             let NSresponse = response as? NSDictionary
+            
+                print(NSresponse as Any)
                 if let email = NSresponse!["email"] as? String {
                     
                     self.user.setEmail(email)
