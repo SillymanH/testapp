@@ -15,6 +15,11 @@ class OTPViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var otpField3: UITextField!
     @IBOutlet weak var otpField4: UITextField!
     
+    let alert = AlertFunctions()
+    let http = HTTPFunctions()
+    
+    let verifyOTP_API = "http://localhost:8888/test_db/VerifyOTP.php"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,6 +62,32 @@ class OTPViewController: UIViewController, UITextFieldDelegate{
         }
     }
     
+    @IBAction func SubmitBtnPressed(_ sender: UIButton) {
+        
+        if otpField1.text!.isEmpty || otpField2.text!.isEmpty || otpField3.text!.isEmpty || otpField4.text!.isEmpty {
+            
+            alert.showAlert(self, "Error", msg: "Please fill all fields")
+                return
+        }
+        
+        let params = "otp=\(otpField1.text!)\(otpField2.text!)\(otpField3.text!)\(otpField4.text!)"
+        http.DoRequestReturnJSON(verifyOTP_API, params, "POST", CustomRequest: nil) { json in
+            
+            guard let response = json as? NSDictionary else {
+                
+                self.alert.showAlert(self, "Error", msg: "Something went wrong!")
+                    return
+            }
+            guard ((response["success"] as? Int) == 1) else {
+                
+                self.alert.showAlert(self ,"Error", msg: response["info"] as! String)
+                    return
+            }
+            
+        }
+    }
+    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
       var result = true
         

@@ -10,6 +10,8 @@
 		1817382E23C296CA004556C8 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1817382D23C296CA004556C8 /* Person.swift */; };
 		1884EA2E23C750DB0028D07D /* YouTubeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1884EA2D23C750DB0028D07D /* YouTubeFunctions.swift */; };
 		18CF44FA23FEBE1A000A61DC /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF44F923FEBE1A000A61DC /* OTPViewController.swift */; };
+		18CF44FE23FF2FFB000A61DC /* ForgotMyPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF44FD23FF2FFB000A61DC /* ForgotMyPasswordViewController.swift */; };
+		18CF450023FF3D71000A61DC /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18CF44FF23FF3D71000A61DC /* ResetPasswordViewController.swift */; };
 		18D5FAB523D86A4500ED372E /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D5FAB423D86A4500ED372E /* Channel.swift */; };
 		18D5FAB723D86AAA00ED372E /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D5FAB623D86AAA00ED372E /* ChannelViewController.swift */; };
 		18D5FABA23D9103A00ED372E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D5FAB923D9103A00ED372E /* ImagePicker.swift */; };
@@ -54,6 +56,8 @@
 		18482E8D23E3A4D500D4836D /* facebook-swift-sdk-0.9.0 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "facebook-swift-sdk-0.9.0"; path = "../FacebookSDK/facebook-swift-sdk-0.9.0"; sourceTree = "<group>"; };
 		1884EA2D23C750DB0028D07D /* YouTubeFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeFunctions.swift; sourceTree = "<group>"; };
 		18CF44F923FEBE1A000A61DC /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
+		18CF44FD23FF2FFB000A61DC /* ForgotMyPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotMyPasswordViewController.swift; sourceTree = "<group>"; };
+		18CF44FF23FF3D71000A61DC /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		18D5FAB423D86A4500ED372E /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		18D5FAB623D86AAA00ED372E /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		18D5FAB923D9103A00ED372E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -149,6 +153,9 @@
 				18EB28C923B162F300A8A037 /* RegisterViewController.swift */,
 				18EB28CB23B169E300A8A037 /* LoggedInViewController.swift */,
 				18D5FAB623D86AAA00ED372E /* ChannelViewController.swift */,
+				18CF44FD23FF2FFB000A61DC /* ForgotMyPasswordViewController.swift */,
+				18CF44F923FEBE1A000A61DC /* OTPViewController.swift */,
+				18CF44FF23FF3D71000A61DC /* ResetPasswordViewController.swift */,
 				18EB289423AF730900A8A037 /* Main.storyboard */,
 				18D5FAB423D86A4500ED372E /* Channel.swift */,
 				1817382D23C296CA004556C8 /* Person.swift */,
@@ -159,7 +166,6 @@
 				18EB289723AF730A00A8A037 /* Assets.xcassets */,
 				18EB289923AF730A00A8A037 /* LaunchScreen.storyboard */,
 				18EB289C23AF730A00A8A037 /* Info.plist */,
-				18CF44F923FEBE1A000A61DC /* OTPViewController.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -483,12 +489,14 @@
 			files = (
 				18CF44FA23FEBE1A000A61DC /* OTPViewController.swift in Sources */,
 				1817382E23C296CA004556C8 /* Person.swift in Sources */,
+				18CF450023FF3D71000A61DC /* ResetPasswordViewController.swift in Sources */,
 				18EB28DA23B8CDAA00A8A037 /* AlertFunctions.swift in Sources */,
 				18EB28C523B0129C00A8A037 /* SuggestedVideosCell.swift in Sources */,
 				18D5FABA23D9103A00ED372E /* ImagePicker.swift in Sources */,
 				18D5FAB523D86A4500ED372E /* Channel.swift in Sources */,
 				1884EA2E23C750DB0028D07D /* YouTubeFunctions.swift in Sources */,
 				18EB289323AF730900A8A037 /* ViewController.swift in Sources */,
+				18CF44FE23FF2FFB000A61DC /* ForgotMyPasswordViewController.swift in Sources */,
 				18EB28CA23B162F300A8A037 /* RegisterViewController.swift in Sources */,
 				18EB288F23AF730900A8A037 /* AppDelegate.swift in Sources */,
 				18EB289123AF730900A8A037 /* SceneDelegate.swift in Sources */,
